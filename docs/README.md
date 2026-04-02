@@ -68,6 +68,8 @@ implementation and maintenance view.
   seconds drawn inside the disc.
 - If the player tries to fire with an empty spoon, a `Scoop soup to reload!` hint box now appears
   just to the right of the soup bowl, stays fully visible for `1s`, and then fades over another `1s`.
+- If the player keeps touch/click or `Space` held while reloading, the spoon now begins charging
+  immediately when the reload completes instead of waiting for a second input.
 - Browser automation relies on `window.advanceTime(ms)` and `window.render_game_to_text()`.
 - Reusable smoke inputs belong in `playwright_scripts/`, and generated validation artifacts belong
   in `tmp/`.

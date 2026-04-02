@@ -234,3 +234,5 @@ Validation:
 - Replaced the repo-root `README.md` with a player-friendly GitHub landing page and folded the
   technical README role into `docs/README.md`.
 - Added `LICENSE.md` at the repo root using the official GNU AGPL-3.0 text.
+- Changed reload completion so a held touch/click or held `Space` now starts charging immediately
+  when the spoon refills, instead of requiring a second press after reloading.

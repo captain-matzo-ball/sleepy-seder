@@ -927,6 +927,7 @@ function beginCharge(state, source) {
     return;
   }
 
+  clearReloadHint(state);
   state.aim.isCharging = true;
   state.aim.source = source;
   state.aim.chargeTimer = 0;
@@ -959,6 +960,18 @@ function updateReloadState(state, deltaSeconds) {
     state.spoon.loaded = true;
     state.spoon.reloadProgress = 1;
     spawnBurst(state, state.layout.bowlX, state.layout.bowlY, "star", 5);
+    beginChargeAfterReloadIfHeld(state);
+  }
+}
+
+function beginChargeAfterReloadIfHeld(state) {
+  if (state.pointer.isDown) {
+    beginCharge(state, "pointer");
+    return;
+  }
+
+  if (state.controls?.space.isDown) {
+    beginCharge(state, "keyboard");
   }
 }
 

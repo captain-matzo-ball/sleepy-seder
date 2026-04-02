@@ -24,7 +24,8 @@ wine glass and adds more trouble to the table.
 - Hold and release `Space`: charge and fire.
 - Move the pointer: aim with mouse or touch.
 - Click or tap: start, advance cards, or charge and fire.
-- Dip the spoon into the soup bowl: reload.
+- Dip the spoon into the soup bowl: reload. If you keep holding touch/click or `Space`, charging
+  now starts automatically as soon as the spoon refills.
 
 ## Play Locally
 

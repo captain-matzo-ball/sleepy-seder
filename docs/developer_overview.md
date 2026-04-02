@@ -76,6 +76,8 @@
 - `triggerReloadHint()` and `drawReloadHint()` now cover the empty-spoon fire attempt path, showing
   a toast beside the soup bowl when the player tries to shoot before reloading; it holds at full
   opacity for `1s` and then fades over another `1s`.
+- `beginChargeAfterReloadIfHeld()` now bridges the reload and fire loops so a held pointer or held
+  `Space` can flow directly into charging as soon as the spoon refills.
 - `updateHazards()` splits locust movement and frog tongue timing away from the projectile logic,
   while announcement mode intentionally freezes hazard advancement.
 - `render_game_to_text()` exposes the mode, level, timer, empty-glass count, hazard counts,
