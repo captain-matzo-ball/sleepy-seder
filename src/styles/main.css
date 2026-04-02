@@ -39,7 +39,7 @@ body {
 }
 
 .stats-strip {
-  top: 1em;
+  top: 0.86em;
   left: 1.15em;
   right: 1.15em;
   z-index: 3;
@@ -202,7 +202,7 @@ body {
 
 @container stage (max-width: 640px) {
   .stats-strip {
-    top: 0.8em;
+    top: 0.7em;
     left: 0.85em;
     right: 0.85em;
   }

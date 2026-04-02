@@ -223,3 +223,5 @@ Validation:
   play.
 - Added a numeric countdown readout inside the in-world timer disc above Dad's head so the circle
   now shows the remaining whole seconds as it empties.
+- Nudged the top status strip upward slightly by reducing its stage-top offset in both the default
+  and compact layout rules.
