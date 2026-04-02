@@ -1,0 +1,67 @@
+{
+  "firstRate": 0.977,
+  "secondRate": 1.032,
+  "state": {
+    "mode": "playing",
+    "level": 3,
+    "levelTimeRemaining": 19.5,
+    "wakefulness": 46.7,
+    "score": 0,
+    "bonks": 0,
+    "emptyGlasses": 3,
+    "threatLabel": "Frogs",
+    "dadState": "awake-ish",
+    "announcement": null,
+    "aim": {
+      "angle": -0.82,
+      "charge": 0.441,
+      "charging": false,
+      "loaded": true,
+      "reloadProgress": 1,
+      "reloadEligible": false
+    },
+    "dadPose": {
+      "headX": 987.6,
+      "headY": 395,
+      "bodyX": 986,
+      "bodyY": 492.9
+    },
+    "locusts": {
+      "flying": 0,
+      "splatted": 0,
+      "gone": 0
+    },
+    "frogs": {
+      "count": 2,
+      "tonguesActive": 1
+    },
+    "audio": {
+      "playing": true,
+      "currentTime": 0.02,
+      "lastPlayedLevel": 3,
+      "playCount": 3,
+      "lastError": null,
+      "snorePlaying": false,
+      "snoreCurrentTime": 0,
+      "snorePlayCount": 0,
+      "snoreLastError": null,
+      "ribbitPlaying": true,
+      "ribbitCurrentTime": 0,
+      "ribbitPlayCount": 2,
+      "ribbitLastError": null,
+      "ribbitPlaybackRate": 1.032,
+      "gulpPlaying": false,
+      "gulpCurrentTime": 0,
+      "gulpPlayCount": 0,
+      "gulpLastError": null,
+      "impactPlaying": false,
+      "lastImpactCue": null,
+      "lastImpactCurrentTime": 0,
+      "impactPlayCount": 0,
+      "impactLastError": null
+    },
+    "projectileCount": 0,
+    "projectiles": []
+  },
+  "errors": []
+}

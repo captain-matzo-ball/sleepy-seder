@@ -1,0 +1,61 @@
+{
+  "mode": "playing",
+  "level": 1,
+  "levelTimeRemaining": 15.3,
+  "wakefulness": 30.4,
+  "score": 90,
+  "bonks": 1,
+  "emptyGlasses": 1,
+  "threatLabel": "Quiet table",
+  "dadState": "awake-ish",
+  "announcement": null,
+  "aim": {
+    "angle": -0.47,
+    "charge": 0,
+    "charging": false,
+    "loaded": false,
+    "reloadProgress": 0,
+    "reloadEligible": false
+  },
+  "dadPose": {
+    "headX": 983.8,
+    "headY": 401.6,
+    "bodyX": 985.3,
+    "bodyY": 494.4
+  },
+  "locusts": {
+    "flying": 0,
+    "splatted": 0,
+    "gone": 0
+  },
+  "frogs": {
+    "count": 0,
+    "tonguesActive": 0
+  },
+  "audio": {
+    "playing": true,
+    "currentTime": 1.57,
+    "lastPlayedLevel": 1,
+    "playCount": 1,
+    "lastError": null,
+    "snorePlaying": false,
+    "snoreCurrentTime": 0,
+    "snorePlayCount": 0,
+    "snoreLastError": null,
+    "ribbitPlaying": false,
+    "ribbitCurrentTime": 0,
+    "ribbitPlayCount": 0,
+    "ribbitLastError": null,
+    "gulpPlaying": false,
+    "gulpCurrentTime": 0,
+    "gulpPlayCount": 0,
+    "gulpLastError": null,
+    "impactPlaying": false,
+    "lastImpactCue": "Splat1.mp3",
+    "lastImpactCurrentTime": 0.24,
+    "impactPlayCount": 1,
+    "impactLastError": null
+  },
+  "projectileCount": 0,
+  "projectiles": []
+}

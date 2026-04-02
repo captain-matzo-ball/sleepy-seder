@@ -1,0 +1,37 @@
+{
+  "mode": "playing",
+  "level": 2,
+  "levelTimeRemaining": 44.9,
+  "wakefulness": 49.1,
+  "score": 0,
+  "bonks": 0,
+  "emptyGlasses": 2,
+  "threatLabel": "Locusts",
+  "dadState": "awake-ish",
+  "announcement": null,
+  "aim": {
+    "angle": -0.82,
+    "charge": 0.429,
+    "charging": false,
+    "loaded": true,
+    "reloadProgress": 1,
+    "reloadEligible": false
+  },
+  "dadPose": {
+    "headX": 987.3,
+    "headY": 395.7,
+    "bodyX": 985.9,
+    "bodyY": 492.8
+  },
+  "locusts": {
+    "flying": 5,
+    "splatted": 0,
+    "gone": 0
+  },
+  "frogs": {
+    "count": 0,
+    "tonguesActive": 0
+  },
+  "projectileCount": 0,
+  "projectiles": []
+}

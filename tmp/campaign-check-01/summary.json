@@ -1,0 +1,18 @@
+{
+  "checks": [
+    "level1 start ok",
+    "level2 announcement ok",
+    "announcement freeze ok",
+    "level2 live ok",
+    "locust splat ok",
+    "locust splat decay ok",
+    "level3 announcement ok",
+    "level3 live ok",
+    "frog stagger ok",
+    "frog catch ok",
+    "level4 first card ok",
+    "level4 second card ok",
+    "level4 live ok"
+  ],
+  "errors": []
+}

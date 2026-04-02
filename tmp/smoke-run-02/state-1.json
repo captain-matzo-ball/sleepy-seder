@@ -1,0 +1,23 @@
+{
+  "mode": "playing",
+  "wakefulness": 13.4,
+  "score": 180,
+  "bonks": 2,
+  "dadState": "drooping",
+  "aim": {
+    "angle": -0.12,
+    "charge": 0,
+    "charging": false,
+    "loaded": false,
+    "reloadProgress": 0,
+    "reloadEligible": false
+  },
+  "dadPose": {
+    "headX": 997.1,
+    "headY": 416.1,
+    "bodyX": 987.7,
+    "bodyY": 496.3
+  },
+  "projectileCount": 0,
+  "projectiles": []
+}

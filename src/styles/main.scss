@@ -1,0 +1,213 @@
+$page-background: #8599a8;
+$panel-background: rgba(72, 19, 31, 0.84);
+$panel-border: rgba(240, 204, 138, 0.44);
+$text-primary: #fff7ea;
+$text-secondary: #f8dfb4;
+$text-accent: #ffd36e;
+$text-deep: #451521;
+$overlay-border: rgba(111, 22, 36, 0.38);
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(circle at 16% 10%, rgba(255, 224, 138, 0.18), transparent 21rem),
+    radial-gradient(circle at 82% 18%, rgba(86, 148, 204, 0.16), transparent 24rem),
+    linear-gradient(180deg, #9caebb 0%, $page-background 100%);
+  color: $text-primary;
+  font-family: Baskerville, "Palatino Linotype", Georgia, serif;
+}
+
+.app-shell {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.hud {
+  position: absolute;
+  top: 1.2rem;
+  left: 1.2rem;
+  z-index: 3;
+  width: min(24rem, calc(100vw - 2.4rem));
+  padding: 1.15rem 1.2rem 1.2rem;
+  border: 1px solid $panel-border;
+  border-radius: 1.35rem;
+  background: $panel-background;
+  backdrop-filter: blur(0.75rem);
+  box-shadow: 0 1.35rem 3.4rem rgba(69, 21, 33, 0.24);
+}
+
+.eyebrow {
+  margin: 0 0 0.35rem;
+  color: $text-accent;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hud h1,
+.overlay-card h2 {
+  margin: 0;
+  font-size: 2.8rem;
+  line-height: 0.95;
+}
+
+.summary {
+  margin: 0.85rem 0 0;
+  color: $text-secondary;
+  line-height: 1.55;
+  font-size: 1rem;
+}
+
+.telemetry {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.7rem;
+  margin: 1rem 0 0;
+}
+
+.telemetry div {
+  padding: 0.72rem 0.78rem 0.8rem;
+  border: 1px solid rgba(255, 247, 234, 0.12);
+  border-radius: 1rem;
+  background: rgba(255, 247, 234, 0.07);
+}
+
+.telemetry dt {
+  margin: 0;
+  color: rgba(248, 223, 180, 0.74);
+  font-size: 0.76rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.telemetry dd {
+  margin: 0.28rem 0 0;
+  color: $text-primary;
+  font-size: 1.45rem;
+  font-weight: 700;
+}
+
+.controls {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.65rem;
+}
+
+.controls li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  color: $text-secondary;
+  font-size: 0.94rem;
+}
+
+.controls span {
+  color: rgba(248, 223, 180, 0.82);
+}
+
+.controls strong {
+  color: $text-primary;
+  text-align: right;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  padding: 1.4rem;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+}
+
+.overlay.is-hidden {
+  opacity: 0;
+}
+
+.overlay-card {
+  width: min(35rem, 100%);
+  padding: 1.35rem 1.45rem 1.5rem;
+  border: 1px solid $overlay-border;
+  border-radius: 1.5rem;
+  background:
+    linear-gradient(180deg, rgba(255, 248, 236, 0.92) 0%, rgba(245, 230, 206, 0.88) 100%);
+  box-shadow: 0 1.5rem 4rem rgba(95, 20, 36, 0.2);
+  text-align: center;
+}
+
+.overlay-card h2 {
+  color: $text-deep;
+}
+
+.overlay-card p {
+  margin: 0.8rem 0 0;
+  color: rgba(69, 21, 33, 0.82);
+  line-height: 1.55;
+}
+
+.overlay-action {
+  color: #7a1428;
+  font-weight: 700;
+}
+
+#game-root {
+  width: 100vw;
+  height: 100vh;
+}
+
+#game-root canvas {
+  display: block;
+}
+
+@media (max-width: 640px) {
+  .hud {
+    top: 0.75rem;
+    left: 0.75rem;
+    width: calc(100vw - 1.5rem);
+    padding: 1rem;
+  }
+
+  .hud h1,
+  .overlay-card h2 {
+    font-size: 2.2rem;
+  }
+
+  .telemetry {
+    gap: 0.55rem;
+  }
+
+  .telemetry dd {
+    font-size: 1.22rem;
+  }
+
+  .controls li {
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .controls strong {
+    text-align: left;
+  }
+
+  .overlay {
+    padding: 1rem;
+  }
+
+  .overlay-card {
+    padding: 1.05rem 1rem 1.15rem;
+  }
+}
