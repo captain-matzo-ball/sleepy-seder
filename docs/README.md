@@ -49,6 +49,8 @@
 - A semi-transparent grey timer disc now sits above that wakefulness bar and empties
   counterclockwise from `12 o'clock` as `levelTimeRemaining` runs down, with the remaining whole
   seconds drawn inside the disc.
+- If the player tries to fire with an empty spoon, a `Scoop soup to reload!` hint box now appears
+  just to the right of the soup bowl, stays fully visible for `1s`, and then fades over another `1s`.
 - Browser automation relies on `window.advanceTime(ms)` and `window.render_game_to_text()`.
 - Reusable smoke inputs belong in `playwright_scripts/`, and generated validation artifacts belong
   in `tmp/`.

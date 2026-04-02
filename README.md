@@ -23,6 +23,9 @@ bar floating above his head that shifts smoothly from green at full wakefulness 
 the middle to red at `10%` or lower, so his current alertness is readable in the play space itself.
 Above that bar, a semi-transparent grey timer disc now empties counterclockwise from `12 o'clock`
 as the level timer runs down, and it now shows the remaining whole seconds inside the disc. The
+game also now pops a small `Scoop soup to reload!` toast to the right of the soup bowl if the
+player tries to fire while the spoon is empty; it stays solid for `1s` and then fades over another
+`1s`. The
 whole game now lives inside a fixed landscape `5:3` stage, so the canvas, HUD, and overlays all
 scale together instead of the playfield changing shape with the browser window.
 

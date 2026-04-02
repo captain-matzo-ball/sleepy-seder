@@ -67,6 +67,8 @@
   aim angle and the charge oscillator.
 - After every shot, the spoon is empty until the player dips it back into the soup bowl and holds it
   in that shallow downward reload angle long enough to refill.
+- Trying to fire while empty now pops a `Scoop soup to reload!` hint box just to the right of the
+  soup bowl; it stays fully visible for `1s` and then fades over another `1s`.
 - Gravity pulls every projectile downward, so timing and loft matter more than rapid spam.
 - A shot disappears if it bonks Dad, splats on the table, gets intercepted by a frog tongue, hits
   a locust, or exits the visible play area.

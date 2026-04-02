@@ -71,12 +71,16 @@
   spawn a short-lived floating `HEADSHOT!` text object.
 - `advancePlayingState()` handles reload detection, spoon charging, wakefulness drain, projectile
   motion, level completion, and state transitions into game over.
+- `triggerReloadHint()` and `drawReloadHint()` now cover the empty-spoon fire attempt path, showing
+  a toast beside the soup bowl when the player tries to shoot before reloading; it holds at full
+  opacity for `1s` and then fades over another `1s`.
 - `updateHazards()` splits locust movement and frog tongue timing away from the projectile logic,
   while announcement mode intentionally freezes hazard advancement.
 - `render_game_to_text()` exposes the mode, level, timer, empty-glass count, hazard counts,
   announcement card, score, wakefulness, aim state, dad pose, active floating hit labels, and the
-  level-start, frog, impact, and game-over audio-cue states for browser automation, including
-  whether an announcement is waiting for player advance and which card in the sequence is visible.
+  reload-hint state plus the level-start, frog, impact, and game-over audio-cue states for browser
+  automation, including whether an announcement is waiting for player advance and which card in the
+  sequence is visible.
 - `advanceTime(ms)` steps the simulation in fixed increments so Playwright can test the game without
   relying on real-time rendering cadence.
 

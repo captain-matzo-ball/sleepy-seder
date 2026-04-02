@@ -22,6 +22,9 @@ const LOCUST_SPLAT_SECONDS = 2.8;
 const FROG_ATTACK_INTERVAL = 3;
 const FROG_TONGUE_DURATION = 0.72;
 const HEADSHOT_TEXT_LIFETIME = 0.75;
+const RELOAD_HINT_HOLD_SECONDS = 1;
+const RELOAD_HINT_FADE_SECONDS = 1;
+const RELOAD_HINT_LIFETIME = RELOAD_HINT_HOLD_SECONDS + RELOAD_HINT_FADE_SECONDS;
 const RIBBIT_PLAYBACK_RATE_VARIATION = 0.05;
 const RANDOM_SEED = Math.floor(Math.random() * 1000000);
 
@@ -147,6 +150,7 @@ function createScene(scene, state) {
   state.graphics.world.setDepth(-10);
   state.graphics.effects.setDepth(10);
   state.labels.timerText = createTimerText(scene);
+  state.labels.reloadHintText = createReloadHintText(scene);
   state.controls = createControls(scene);
 
   registerPointerControls(scene, state);
@@ -258,6 +262,7 @@ function createGameState(dom, initialSize) {
     },
     labels: {
       timerText: null,
+      reloadHintText: null,
     },
     size: initialSize,
     layout: createLayout(initialSize),
@@ -304,6 +309,9 @@ function createGameState(dom, initialSize) {
       isDown: false,
       x: initialSize.width * 0.5,
       y: initialSize.height * 0.5,
+    },
+    reloadHint: {
+      remaining: 0,
     },
     resizeObserver: null,
   };
@@ -441,6 +449,7 @@ function resetRound(state, mode) {
   state.projectiles = [];
   state.particles = [];
   clearFloatingTexts(state);
+  clearReloadHint(state);
   state.spoon.loaded = true;
   state.spoon.reloadProgress = 1;
   state.aim.angle = -0.82;
@@ -495,6 +504,7 @@ function startLevel(state, level, useAnnouncements) {
   state.projectiles = [];
   state.particles = [];
   clearFloatingTexts(state);
+  clearReloadHint(state);
   state.spoon.loaded = true;
   state.spoon.reloadProgress = 1;
   state.aim.angle = -0.82;
@@ -533,6 +543,7 @@ function enterGameOver(state) {
   state.wakefulness = 0;
   state.projectiles = [];
   clearFloatingTexts(state);
+  clearReloadHint(state);
   state.aim.isCharging = false;
   state.aim.source = null;
   stopAudioCue(state.audio.levelStartCue);
@@ -547,6 +558,7 @@ function enterVictory(state) {
   state.levelTimeRemaining = 0;
   state.projectiles = [];
   clearFloatingTexts(state);
+  clearReloadHint(state);
   state.hazards.locusts = [];
   state.hazards.frogs = [];
   state.aim.isCharging = false;
@@ -729,6 +741,15 @@ function clearFloatingTexts(state) {
   state.floatingTexts = [];
 }
 
+function clearReloadHint(state) {
+  state.reloadHint.remaining = 0;
+
+  if (state.labels.reloadHintText) {
+    state.labels.reloadHintText.setVisible(false);
+    state.labels.reloadHintText.setAlpha(1);
+  }
+}
+
 function createTimerText(scene) {
   const timerText = scene.add.text(0, 0, "", {
     fontFamily: 'Baskerville, "Palatino Linotype", Georgia, serif',
@@ -739,6 +760,19 @@ function createTimerText(scene) {
   timerText.setOrigin(0.5);
   timerText.setDepth(12);
   return timerText;
+}
+
+function createReloadHintText(scene) {
+  const reloadHintText = scene.add.text(0, 0, "Scoop soup to reload!", {
+    fontFamily: 'Baskerville, "Palatino Linotype", Georgia, serif',
+    fontSize: "24px",
+    fontStyle: "700",
+    color: "#fff7ea",
+  });
+  reloadHintText.setOrigin(0, 0.5);
+  reloadHintText.setDepth(16);
+  reloadHintText.setVisible(false);
+  return reloadHintText;
 }
 
 function clearAnnouncementState(state) {
@@ -829,6 +863,7 @@ function advancePlayingState(state, deltaSeconds) {
   updateProjectiles(state, deltaSeconds);
   updateParticles(state, deltaSeconds);
   updateFloatingTexts(state, deltaSeconds);
+  updateReloadHint(state, deltaSeconds);
   state.wakefulness -= BASE_WAKE_DRAIN_PER_SECOND * readWakeDrainMultiplier(state) * deltaSeconds;
 
   if (state.wakefulness <= 0) {
@@ -846,6 +881,7 @@ function advanceAnnouncementState(state, deltaSeconds) {
   updateDadState(state, deltaSeconds);
   updateParticles(state, deltaSeconds);
   updateFloatingTexts(state, deltaSeconds);
+  updateReloadHint(state, deltaSeconds);
 }
 
 function advancePreviewState(state, deltaSeconds) {
@@ -853,6 +889,7 @@ function advancePreviewState(state, deltaSeconds) {
   updateDadState(state, deltaSeconds);
   updateParticles(state, deltaSeconds);
   updateFloatingTexts(state, deltaSeconds);
+  updateReloadHint(state, deltaSeconds);
 }
 
 function updateAimFromKeyboard(state, deltaSeconds) {
@@ -881,7 +918,12 @@ function updatePointerAim(state, pointer) {
 }
 
 function beginCharge(state, source) {
-  if (state.mode !== "playing" || state.aim.isCharging || !state.spoon.loaded) {
+  if (state.mode !== "playing" || state.aim.isCharging) {
+    return;
+  }
+
+  if (!state.spoon.loaded) {
+    triggerReloadHint(state);
     return;
   }
 
@@ -1223,6 +1265,21 @@ function updateParticles(state, deltaSeconds) {
   state.particles = nextParticles;
 }
 
+function updateReloadHint(state, deltaSeconds) {
+  if (state.reloadHint.remaining <= 0) {
+    if (state.labels.reloadHintText) {
+      state.labels.reloadHintText.setVisible(false);
+    }
+    return;
+  }
+
+  state.reloadHint.remaining -= deltaSeconds;
+
+  if (state.reloadHint.remaining <= 0 && state.labels.reloadHintText) {
+    state.labels.reloadHintText.setVisible(false);
+  }
+}
+
 function updateFloatingTexts(state, deltaSeconds) {
   const nextFloatingTexts = [];
 
@@ -1307,6 +1364,14 @@ function spawnHeadshotText(state, x, y) {
   });
 }
 
+function triggerReloadHint(state) {
+  if (!state.labels.reloadHintText) {
+    throw new Error("Cannot show the sleepy_seder reload hint before the hint text exists.");
+  }
+
+  state.reloadHint.remaining = RELOAD_HINT_LIFETIME;
+}
+
 function drawScene(state) {
   if (!state.graphics.backdrop || !state.graphics.world || !state.graphics.effects) {
     throw new Error("Cannot draw sleepy_seder before all graphics layers exist.");
@@ -1326,6 +1391,7 @@ function drawScene(state) {
   drawFrogTongues(state.graphics.effects, state);
   drawAimGuide(state.graphics.effects, state);
   drawParticles(state.graphics.effects, state);
+  drawReloadHint(state.graphics.effects, state);
 }
 
 function drawBackdrop(graphics, state) {
@@ -1867,6 +1933,45 @@ function drawParticles(graphics, state) {
   }
 }
 
+function drawReloadHint(graphics, state) {
+  const hintText = state.labels.reloadHintText;
+
+  if (!hintText) {
+    throw new Error("Sleepy Seder reload hint text was not initialized before drawing.");
+  }
+
+  if (state.reloadHint.remaining <= 0) {
+    hintText.setVisible(false);
+    return;
+  }
+
+  const layout = readLayout(state);
+  const fadeRemaining = Math.min(state.reloadHint.remaining, RELOAD_HINT_FADE_SECONDS);
+  const alpha =
+    state.reloadHint.remaining > RELOAD_HINT_FADE_SECONDS ? 1 : fadeRemaining / RELOAD_HINT_FADE_SECONDS;
+  const fontSize = Math.max(18, Math.round(state.size.height * 0.022));
+  const x = layout.bowlX + layout.bowlRadius * 1.9;
+  const y = layout.bowlY - layout.bowlRadius * 0.1;
+  const paddingX = Math.max(10, Math.round(fontSize * 0.45));
+  const paddingY = Math.max(7, Math.round(fontSize * 0.28));
+
+  hintText.setFontSize(fontSize);
+  hintText.setPosition(x, y);
+  hintText.setAlpha(alpha);
+  hintText.setVisible(true);
+
+  const boxX = x - paddingX;
+  const boxY = y - hintText.displayHeight * 0.5 - paddingY;
+  const boxWidth = hintText.displayWidth + paddingX * 2;
+  const boxHeight = hintText.displayHeight + paddingY * 2;
+  const radius = Math.round(fontSize * 0.45);
+
+  graphics.fillStyle(0x4a1820, alpha * 0.9);
+  graphics.fillRoundedRect(boxX, boxY, boxWidth, boxHeight, radius);
+  graphics.lineStyle(2, 0xf2dba8, alpha * 0.8);
+  graphics.strokeRoundedRect(boxX, boxY, boxWidth, boxHeight, radius);
+}
+
 function updateOverlay(state) {
   const isMenu = state.mode === "menu";
 
@@ -1898,9 +2003,9 @@ function updateOverlay(state) {
 
   if (state.mode === "victory") {
     state.dom.overlayKicker.textContent = "Dayenu";
-    state.dom.overlayTitle.textContent = "Seder Saved";
+    state.dom.overlayTitle.textContent = "You've saved Passover!";
     state.dom.overlayBody.textContent =
-      "All four glasses are empty, every level is behind you, and Dad made it through the whole seder awake enough to finish.";
+      "Dad finished all four glasses of wine without dozing off even once. Great job!";
     state.dom.overlayAction.textContent = "Press Enter or tap the table to play again";
     return;
   }
@@ -1908,7 +2013,7 @@ function updateOverlay(state) {
   state.dom.overlayKicker.textContent = `Level ${state.level}`;
   state.dom.overlayTitle.textContent = "Dad Dozed Off";
   state.dom.overlayBody.textContent =
-    "The nodding finally won before the level timer ran out. Restart and try to get through all four glasses.";
+    "Dad fell asleep. Better luck next year (in Jerusalem)!";
   state.dom.overlayAction.textContent = "Press Enter or tap the table to try again";
 }
 
@@ -1964,6 +2069,10 @@ function renderGameToText(state) {
       y: roundNumber(floatingText.y, 1),
       life: roundNumber(floatingText.life, 2),
     })),
+    reloadHint: {
+      visible: state.reloadHint.remaining > 0,
+      remaining: roundNumber(Math.max(0, state.reloadHint.remaining), 2),
+    },
     audio: {
       playing: !state.audio.levelStartCue.paused,
       currentTime: roundNumber(state.audio.levelStartCue.currentTime, 2),

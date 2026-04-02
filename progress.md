@@ -225,3 +225,7 @@ Validation:
   now shows the remaining whole seconds as it empties.
 - Nudged the top status strip upward slightly by reducing its stage-top offset in both the default
   and compact layout rules.
+- Added an empty-spoon fire hint so trying to shoot before reloading now shows `Scoop soup to
+  reload!` in a short-lived box beside the soup bowl.
+- Retuned that reload hint so it now stays fully visible for `1s` before fading out over another
+  `1s`.
