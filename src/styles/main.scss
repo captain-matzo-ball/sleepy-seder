@@ -18,6 +18,7 @@ body {
 }
 
 body {
+  display: grid;
   background:
     radial-gradient(circle at 16% 10%, rgba(255, 224, 138, 0.18), transparent 21rem),
     radial-gradient(circle at 82% 18%, rgba(86, 148, 204, 0.16), transparent 24rem),
@@ -27,43 +28,59 @@ body {
 }
 
 .app-shell {
+  display: grid;
+  place-items: center;
   position: relative;
   min-height: 100vh;
-  overflow: hidden;
+  width: 100%;
+  padding: 1rem;
+}
+
+.stage-frame {
+  position: relative;
+  --stage-width: min(calc(100vw - 2rem), calc((100vh - 2rem) * 5 / 3));
+  width: var(--stage-width);
+  aspect-ratio: 5 / 3;
+  font-size: calc(var(--stage-width) / 64);
+  container-type: size;
+  container-name: stage;
+}
+
+.stage-frame > * {
+  position: absolute;
 }
 
 .hud-layout {
-  position: absolute;
-  top: 1.2rem;
-  left: 1.2rem;
-  right: 1.2rem;
+  top: 1.2em;
+  left: 1.2em;
+  right: 1.2em;
   z-index: 3;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 1rem;
+  gap: 1em;
   pointer-events: none;
 }
 
 .hud-panel {
-  width: min(24rem, calc((100vw - 3.4rem) / 2));
-  padding: 1.15rem 1.2rem 1.2rem;
+  width: min(24em, calc((100% - 3.4em) / 2));
+  padding: 1.15em 1.2em 1.2em;
   border: 1px solid $panel-border;
-  border-radius: 1.35rem;
+  border-radius: 1.35em;
   background: $panel-background;
   backdrop-filter: blur(0.75rem);
-  box-shadow: 0 1.35rem 3.4rem rgba(69, 21, 33, 0.24);
+  box-shadow: 0 1.35em 3.4em rgba(69, 21, 33, 0.24);
   pointer-events: auto;
 }
 
 .hud-panel--status {
-  width: min(20rem, calc((100vw - 3.4rem) / 2));
+  width: min(20em, calc((100% - 3.4em) / 2));
 }
 
 .eyebrow {
-  margin: 0 0 0.35rem;
+  margin: 0 0 0.35em;
   color: $text-accent;
-  font-size: 0.72rem;
+  font-size: 0.72em;
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -72,60 +89,60 @@ body {
 .hud-panel h1,
 .overlay-card h2 {
   margin: 0;
-  font-size: 2.8rem;
+  font-size: 2.8em;
   line-height: 0.95;
 }
 
 .summary {
-  margin: 0.85rem 0 0;
+  margin: 0.85em 0 0;
   color: $text-secondary;
   line-height: 1.55;
-  font-size: 1rem;
+  font-size: 1em;
 }
 
 .telemetry {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.7rem;
-  margin: 1rem 0 0;
+  gap: 0.7em;
+  margin: 1em 0 0;
 }
 
 .telemetry div {
-  padding: 0.72rem 0.78rem 0.8rem;
+  padding: 0.72em 0.78em 0.8em;
   border: 1px solid rgba(255, 247, 234, 0.12);
-  border-radius: 1rem;
+  border-radius: 1em;
   background: rgba(255, 247, 234, 0.07);
 }
 
 .telemetry dt {
   margin: 0;
   color: rgba(248, 223, 180, 0.74);
-  font-size: 0.76rem;
+  font-size: 0.76em;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .telemetry dd {
-  margin: 0.28rem 0 0;
+  margin: 0.28em 0 0;
   color: $text-primary;
-  font-size: 1.45rem;
+  font-size: 1.45em;
   font-weight: 700;
 }
 
 .controls {
-  margin: 1rem 0 0;
+  margin: 1em 0 0;
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 0.65rem;
+  gap: 0.65em;
 }
 
 .controls li {
   display: flex;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 1em;
   color: $text-secondary;
-  font-size: 0.94rem;
+  font-size: 0.94em;
 }
 
 .controls span {
@@ -138,12 +155,11 @@ body {
 }
 
 .overlay {
-  position: absolute;
   inset: 0;
   z-index: 2;
   display: grid;
   place-items: center;
-  padding: 1.4rem;
+  padding: 1.4em;
   pointer-events: none;
   transition: opacity 180ms ease;
 }
@@ -153,13 +169,13 @@ body {
 }
 
 .overlay-card {
-  width: min(35rem, 100%);
-  padding: 1.35rem 1.45rem 1.5rem;
+  width: min(35em, 100%);
+  padding: 1.35em 1.45em 1.5em;
   border: 1px solid $overlay-border;
-  border-radius: 1.5rem;
+  border-radius: 1.5em;
   background:
     linear-gradient(180deg, rgba(255, 248, 236, 0.92) 0%, rgba(245, 230, 206, 0.88) 100%);
-  box-shadow: 0 1.5rem 4rem rgba(95, 20, 36, 0.2);
+  box-shadow: 0 1.5em 4em rgba(95, 20, 36, 0.2);
   text-align: center;
 }
 
@@ -168,7 +184,7 @@ body {
 }
 
 .overlay-card p {
-  margin: 0.8rem 0 0;
+  margin: 0.8em 0 0;
   color: rgba(69, 21, 33, 0.82);
   line-height: 1.55;
 }
@@ -179,45 +195,46 @@ body {
 }
 
 #game-root {
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
 }
 
 #game-root canvas {
   display: block;
+  width: 100% !important;
+  height: 100% !important;
 }
 
-@media (max-width: 640px) {
+@container stage (max-width: 640px) {
   .hud-layout {
-    top: 0.75rem;
-    left: 0.75rem;
-    right: 0.75rem;
+    top: 0.75em;
+    left: 0.75em;
+    right: 0.75em;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.75em;
   }
 
   .hud-panel,
   .hud-panel--status {
     width: 100%;
-    padding: 1rem;
+    padding: 1em;
   }
 
   .hud-panel h1,
   .overlay-card h2 {
-    font-size: 2.2rem;
+    font-size: 2.2em;
   }
 
   .telemetry {
-    gap: 0.55rem;
+    gap: 0.55em;
   }
 
   .telemetry dd {
-    font-size: 1.22rem;
+    font-size: 1.22em;
   }
 
   .controls li {
     flex-direction: column;
-    gap: 0.1rem;
+    gap: 0.1em;
   }
 
   .controls strong {
@@ -225,10 +242,10 @@ body {
   }
 
   .overlay {
-    padding: 1rem;
+    padding: 1em;
   }
 
   .overlay-card {
-    padding: 1.05rem 1rem 1.15rem;
+    padding: 1.05em 1em 1.15em;
   }
 }

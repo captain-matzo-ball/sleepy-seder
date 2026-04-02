@@ -39,6 +39,8 @@
   floating text labels for verification.
 - The page HUD is now split into an upper-left instruction panel and an upper-right telemetry
   panel, instead of packing both into one top-left card.
+- The entire presentation now lives inside a fixed landscape `5:3` stage, and the HUD plus overlay
+  sizing scales from that stage instead of the browser viewport.
 - Dad now keeps oval eyes while awake or drooping, and only switches to flat closed-eye lines in
   the actual asleep game-over state.
 - Dad now also has an in-world rounded wakefulness bar above his head that shifts from green at

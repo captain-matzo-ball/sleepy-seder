@@ -2,8 +2,8 @@
 
 ## Structure
 
-- `index.html` provides the split top-left/top-right HUD panels, overlay card, game root, and
-  script loading order.
+- `index.html` provides the centered fixed-`5:3` stage shell, split top-left/top-right HUD panels,
+  overlay card, game root, and script loading order.
 - `vendor/phaser.js` is the locally vendored Phaser runtime loaded before the game bootstraps.
 - `src/game.js` owns Phaser bootstrapping, DOM validation, input wiring, deterministic stepping,
   scene drawing, collision checks, four-level campaign flow, wakefulness decay, hazard state, and
@@ -17,6 +17,8 @@
 
 ## Scene layout
 
+- The browser window now letterboxes a single landscape `5:3` stage, and both the DOM HUD and the
+  Phaser canvas key their size from that shared stage instead of from the viewport.
 - The room, table, spoon, father, candles, dishes, projectiles, and particle effects are all drawn
   from Phaser graphics primitives, so the game has no external art pipeline.
 - The spoon launcher lives on the left side of the table and computes a ballistic launch vector from
@@ -42,6 +44,8 @@
 
 - `advanceFrame()` routes between `menu`, `announcement`, `playing`, `gameover`, and `victory`
   while keeping UI and overlay text synchronized each step.
+- `syncSceneSizeToDom()` uses `ResizeObserver` plus Phaser resize events to keep the canvas locked
+  to the measured `#game-root` size inside the fixed `5:3` stage.
 - `startRound()`, `startLevel()`, and `completeLevel()` own the four-stage campaign, resetting
   wakefulness to max between levels while preserving score and bonk totals; the opening menu start
   now routes into the same level-1 announcement flow as later stages instead of jumping straight to
@@ -91,5 +95,5 @@
   `tmp/wake-bar-check-02/`, `tmp/wake-bar-color-check-01-green/`,
   `tmp/wake-bar-color-check-01-yellow/`, `tmp/wake-bar-color-check-01-red/`,
   `tmp/timer-pie-check-01-full/`, `tmp/timer-pie-check-01-mid/`, and
-  `tmp/timer-pie-check-02-near-empty/`. Keep newer runs in `tmp/` rather than mixing them into
-  source files.
+  `tmp/timer-pie-check-02-near-empty/`, `tmp/aspect-ratio-check-01/`, and
+  `tmp/smoke-run-16/`. Keep newer runs in `tmp/` rather than mixing them into source files.

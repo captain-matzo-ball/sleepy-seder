@@ -10,64 +10,65 @@
   </head>
   <body>
     <main class="app-shell">
-      <header class="hud-layout" aria-label="Sleepy Seder interface">
-        <aside class="hud-panel hud-panel--info" aria-label="Sleepy Seder instructions">
-          <p class="eyebrow">Phaser Tabletop Arcade</p>
-          <h1>Sleepy Seder</h1>
-          <p class="summary">
-            Survive four seder levels by splatting Dad awake, reloading from the soup bowl, and
-            dealing with whatever new plague shows up when another wine glass runs dry. Dad falls 
-            asleep a bit faster with each glass of wine.
-          </p>
-          <ul class="controls" aria-label="Controls">
-            <li><span>Aim</span><strong>Arrows / WASD / Pointer</strong></li>
-            <li><span>Charge &amp; Fire</span><strong>Hold + release Space / Tap / Click</strong></li>
-            <li><span>Reload</span><strong>Dip into soup</strong></li>
-            <li><span>Start / Continue / Restart</span><strong>Enter / Tap / Click</strong></li>
-          </ul>
-        </aside>
-        <aside class="hud-panel hud-panel--status" aria-label="Sleepy Seder status">
-          <p class="eyebrow">Round Status</p>
-          <dl class="telemetry">
-            <div>
-              <dt>Mode</dt>
-              <dd id="mode-value">Menu</dd>
-            </div>
-            <div>
-              <dt>Level</dt>
-              <dd id="level-value">1 / 4</dd>
-            </div>
-            <div>
-              <dt>Time Left</dt>
-              <dd id="time-value">20s</dd>
-            </div>
-            <div>
-              <dt>Wake Meter</dt>
-              <dd id="wake-value">50</dd>
-            </div>
-            <div>
-              <dt>Score</dt>
-              <dd id="score-value">0</dd>
-            </div>
-            <div>
-              <dt>Bonks</dt>
-              <dd id="hits-value">0</dd>
-            </div>
-          </dl>
-        </aside>
-      </header>
-      <section class="overlay" id="overlay" aria-live="polite">
-        <div class="overlay-card">
-          <p class="eyebrow" id="overlay-kicker">Matzo Ball Emergency</p>
-          <h2 id="overlay-title">Keep Dad Awake For Four Levels</h2>
-          <p id="overlay-body">
-            Another glass empties every level. Stay alive for the full timer, then brace for the
-            next plague before the seder falls apart.
-          </p>
-          <p class="overlay-action" id="overlay-action">Press Enter or tap the table to begin</p>
-        </div>
+      <section class="stage-frame" aria-label="Sleepy Seder stage">
+        <header class="hud-layout" aria-label="Sleepy Seder interface">
+          <aside class="hud-panel hud-panel--info" aria-label="Sleepy Seder instructions">
+            <h1>Sleepy Seder</h1>
+            <p class="summary">
+              Survive four seder levels by splatting Dad awake, reloading from the soup bowl, and
+              dealing with whatever new plague shows up when another wine glass runs dry. Dad falls
+              asleep a bit faster with each glass of wine.
+            </p>
+            <ul class="controls" aria-label="Controls">
+              <li><span>Aim</span><strong>Arrows / WASD / Pointer</strong></li>
+              <li><span>Charge &amp; Fire</span><strong>Hold + release Space / Tap / Click</strong></li>
+              <li><span>Reload</span><strong>Dip into soup</strong></li>
+              <li><span>Start / Continue / Restart</span><strong>Enter / Tap / Click</strong></li>
+            </ul>
+          </aside>
+          <aside class="hud-panel hud-panel--status" aria-label="Sleepy Seder status">
+            <p class="eyebrow">Round Status</p>
+            <dl class="telemetry">
+              <div>
+                <dt>Mode</dt>
+                <dd id="mode-value">Menu</dd>
+              </div>
+              <div>
+                <dt>Level</dt>
+                <dd id="level-value">1 / 4</dd>
+              </div>
+              <div>
+                <dt>Time Left</dt>
+                <dd id="time-value">20s</dd>
+              </div>
+              <div>
+                <dt>Wake Meter</dt>
+                <dd id="wake-value">50</dd>
+              </div>
+              <div>
+                <dt>Score</dt>
+                <dd id="score-value">0</dd>
+              </div>
+              <div>
+                <dt>Bonks</dt>
+                <dd id="hits-value">0</dd>
+              </div>
+            </dl>
+          </aside>
+        </header>
+        <section class="overlay" id="overlay" aria-live="polite">
+          <div class="overlay-card">
+            <p class="eyebrow" id="overlay-kicker">Matzo Ball Emergency</p>
+            <h2 id="overlay-title">Keep Dad Awake For Four Levels</h2>
+            <p id="overlay-body">
+              Another glass empties every level. Stay alive for the full timer, then brace for the
+              next plague before the seder falls apart.
+            </p>
+            <p class="overlay-action" id="overlay-action">Press Enter or tap the table to begin</p>
+          </div>
+        </section>
+        <div id="game-root" aria-label="2D game view" role="application"></div>
       </section>
-      <div id="game-root" aria-label="2D game view" role="application"></div>
     </main>
     <script src="./src/game.js"></script>
   </body>

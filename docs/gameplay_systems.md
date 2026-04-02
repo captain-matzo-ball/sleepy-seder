@@ -76,6 +76,8 @@
 
 ## Presentation
 
+- The whole game now renders inside a fixed landscape `5:3` stage, so the visible playfield keeps
+  the same proportions across browser sizes while the HUD and overlays scale with it.
 - Dad’s head slump, eye openness, and snore particles are all derived from the current sleepiness
   state rather than from separate animation clips.
 - Dad also carries a rounded wakefulness bar above his head that shifts from green at full

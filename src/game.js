@@ -22,7 +22,7 @@ const BODY_HIT_SCORE = Math.round(BASE_BODY_HIT_SCORE * BODY_HIT_MULTIPLIER);
 const HEAD_HIT_WAKE = BASE_HEAD_HIT_WAKE * HEAD_HIT_MULTIPLIER;
 const BODY_HIT_WAKE = BASE_BODY_HIT_WAKE * BODY_HIT_MULTIPLIER;
 const RELOAD_MIN_ANGLE = (5 * Math.PI) / 180;
-const RELOAD_MAX_ANGLE = (15 * Math.PI) / 180;
+const RELOAD_MAX_ANGLE = (20 * Math.PI) / 180;
 const RELOAD_HOLD_SECONDS = 0.18;
 const LOCUST_SPLAT_SECONDS = 2.8;
 const FROG_ATTACK_INTERVAL = 3;
@@ -129,6 +129,9 @@ const LEVEL_DEFINITIONS = [
   window.advanceTime = (ms) => advanceSimulationByMs(state, ms);
 
   window.addEventListener("beforeunload", () => {
+    if (state.resizeObserver) {
+      state.resizeObserver.disconnect();
+    }
     game.destroy(true);
   });
 })();
@@ -136,6 +139,10 @@ const LEVEL_DEFINITIONS = [
 function createScene(scene, state) {
   if (!scene.input.keyboard) {
     throw new Error("Phaser keyboard input is required for sleepy_seder.");
+  }
+
+  if (typeof ResizeObserver !== "function") {
+    throw new Error("Sleepy Seder requires ResizeObserver to manage its fixed stage.");
   }
 
   state.scene = scene;
@@ -152,7 +159,12 @@ function createScene(scene, state) {
     handleResize(state);
   });
 
-  handleResize(state);
+  state.resizeObserver = new ResizeObserver(() => {
+    syncSceneSizeToDom(state);
+  });
+  state.resizeObserver.observe(state.dom.gameRoot);
+
+  syncSceneSizeToDom(state);
   resetRound(state, "menu");
   syncUi(state);
   drawScene(state);
@@ -295,6 +307,7 @@ function createGameState(dom, initialSize) {
       x: initialSize.width * 0.5,
       y: initialSize.height * 0.5,
     },
+    resizeObserver: null,
   };
 }
 
@@ -400,6 +413,22 @@ function handleResize(state) {
   state.layout = createLayout(state.size);
   realignHazardsToLayout(state);
   drawScene(state);
+}
+
+function syncSceneSizeToDom(state) {
+  if (!state.scene) {
+    throw new Error("Cannot sync sleepy_seder size before the scene exists.");
+  }
+
+  const nextSize = readGameRootSize(state.dom.gameRoot);
+  const currentSize = getSceneSize(state.scene);
+
+  if (nextSize.width !== currentSize.width || nextSize.height !== currentSize.height) {
+    state.scene.scale.resize(nextSize.width, nextSize.height);
+    return;
+  }
+
+  handleResize(state);
 }
 
 function resetRound(state, mode) {
@@ -2369,19 +2398,22 @@ function readDomReferences(doc) {
 
 function readGameRootSize(gameRoot) {
   const rect = gameRoot.getBoundingClientRect();
+  const width = Math.round(rect.width);
+  const height = Math.round(rect.height);
 
-  if (rect.width <= 0 || rect.height <= 0) {
+  if (width <= 0 || height <= 0) {
     throw new Error("Expected #game-root to have a measurable layout before bootstrapping Phaser.");
   }
 
   return {
-    width: rect.width,
-    height: rect.height,
+    width,
+    height,
   };
 }
 
 function getSceneSize(scene) {
-  const { width, height } = scene.scale;
+  const width = Math.round(scene.scale.width);
+  const height = Math.round(scene.scale.height);
 
   if (width <= 0 || height <= 0) {
     throw new Error("Expected Phaser scale manager to expose a positive scene size.");

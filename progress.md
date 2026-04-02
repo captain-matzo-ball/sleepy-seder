@@ -192,3 +192,17 @@ Validation:
   opening briefing shows a full disc at `20s`, `tmp/timer-pie-check-01-mid/` shows a partially
   emptied disc during live play at `16.8s`, and `tmp/timer-pie-check-02-near-empty/` forces a
   live `1s` remaining state to confirm the disc is nearly empty.
+- Reworked the page into a centered fixed landscape `4:3` stage so the Phaser canvas no longer
+  changes aspect ratio with the browser window.
+- Converted the HUD and overlay sizing from viewport-driven measurements to stage-relative scaling
+  so the DOM UI grows and shrinks with the same frame as the canvas.
+- Added `ResizeObserver`-driven scene syncing so Phaser resizes against the measured `#game-root`
+  stage rectangle instead of assuming the viewport.
+- Recompiled `src/styles/main.scss` after the stage-shell rewrite and rechecked `src/game.js` with
+  `node --check`.
+- Added a two-viewport fixed-stage verification in `tmp/aspect-ratio-check-01/`, confirming the
+  stage, game root, and canvas all stay at roughly `1.3333` in both wide and tall browser windows.
+- Reran the baseline smoke loop into `tmp/smoke-run-16/`; level 1 still enters live play and lands
+  two hits inside the new fixed stage.
+- Retuned the fixed stage from landscape `4:3` to landscape `5:3` so the canvas is wider while the
+  DOM HUD and overlay continue scaling from the same shared frame.
