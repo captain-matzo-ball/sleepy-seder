@@ -85,7 +85,8 @@
   wakefulness through yellow to red at `10%` or lower, so the target's current alertness is
   legible directly in the canvas instead of relying on a separate meter panel.
 - Above that bar, a semi-transparent grey timer disc empties counterclockwise from `12 o'clock` as
-  the active level timer runs down, while briefings leave it full.
+  the active level timer runs down, while briefings leave it full; the remaining whole seconds are
+  drawn inside the disc.
 - Hits generate crumbs and starburst particles to keep the scene readable even without sound.
 - Head hits also spawn a small red `HEADSHOT!` label that floats upward and fades out over `0.75s`.
 - The start menu uses one centered intro card with the controls in it, while live play shows only

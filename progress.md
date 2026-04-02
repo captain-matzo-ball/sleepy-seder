@@ -221,3 +221,5 @@ Validation:
   shows the centered `Sleepy Seder` card, the old overlay body is hidden before play starts, and
   the top strip reads `Level 1 / 4`, `Bonks 0`, and `Score 0` in both the opening screen and live
   play.
+- Added a numeric countdown readout inside the in-world timer disc above Dad's head so the circle
+  now shows the remaining whole seconds as it empties.

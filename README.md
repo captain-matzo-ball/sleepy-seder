@@ -22,9 +22,9 @@ only after he finally falls asleep. Dad also now has a rounded wakefulness
 bar floating above his head that shifts smoothly from green at full wakefulness through yellow in
 the middle to red at `10%` or lower, so his current alertness is readable in the play space itself.
 Above that bar, a semi-transparent grey timer disc now empties counterclockwise from `12 o'clock`
-as the level timer runs down. The whole game now lives inside a fixed landscape `5:3` stage, so
-the canvas, HUD, and overlays all scale together instead of the playfield changing shape with the
-browser window.
+as the level timer runs down, and it now shows the remaining whole seconds inside the disc. The
+whole game now lives inside a fixed landscape `5:3` stage, so the canvas, HUD, and overlays all
+scale together instead of the playfield changing shape with the browser window.
 
 ## Files
 

@@ -146,6 +146,7 @@ function createScene(scene, state) {
   state.graphics.backdrop.setDepth(-20);
   state.graphics.world.setDepth(-10);
   state.graphics.effects.setDepth(10);
+  state.labels.timerText = createTimerText(scene);
   state.controls = createControls(scene);
 
   registerPointerControls(scene, state);
@@ -254,6 +255,9 @@ function createGameState(dom, initialSize) {
       backdrop: null,
       world: null,
       effects: null,
+    },
+    labels: {
+      timerText: null,
     },
     size: initialSize,
     layout: createLayout(initialSize),
@@ -723,6 +727,18 @@ function clearFloatingTexts(state) {
   }
 
   state.floatingTexts = [];
+}
+
+function createTimerText(scene) {
+  const timerText = scene.add.text(0, 0, "", {
+    fontFamily: 'Baskerville, "Palatino Linotype", Georgia, serif',
+    fontSize: "24px",
+    fontStyle: "700",
+    color: "#43302a",
+  });
+  timerText.setOrigin(0.5);
+  timerText.setDepth(12);
+  return timerText;
 }
 
 function clearAnnouncementState(state) {
@@ -1562,6 +1578,7 @@ function drawDad(graphics, state) {
 
   graphics.lineStyle(2, 0x4f4f4f, 0.45);
   graphics.strokeCircle(timerCenterX, timerCenterY, timerRadius);
+  syncTimerText(state, timerCenterX, timerCenterY, timerRadius);
 
   graphics.fillStyle(0x6b4b2b, 0.58);
   graphics.fillRoundedRect(
@@ -1656,6 +1673,26 @@ function readLevelTimerRatio(state) {
   }
 
   return state.levelTimeRemaining / LEVEL_DURATION_SECONDS;
+}
+
+function readDisplayedLevelSeconds(state) {
+  if (state.mode === "menu" || state.mode === "announcement") {
+    return LEVEL_DURATION_SECONDS;
+  }
+
+  return Math.ceil(state.levelTimeRemaining);
+}
+
+function syncTimerText(state, centerX, centerY, radius) {
+  const timerText = state.labels.timerText;
+
+  if (!timerText) {
+    throw new Error("Sleepy Seder timer label was not initialized before drawing Dad.");
+  }
+
+  timerText.setText(String(readDisplayedLevelSeconds(state)));
+  timerText.setPosition(centerX, centerY + radius * 0.02);
+  timerText.setFontSize(Math.round(radius * 1.08));
 }
 
 function interpolateRgbColor(startColor, endColor, progress) {

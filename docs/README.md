@@ -47,7 +47,8 @@
   full wakefulness through yellow in the middle to red at `10%` or lower, so Dad's current
   alertness stays visible directly over the target.
 - A semi-transparent grey timer disc now sits above that wakefulness bar and empties
-  counterclockwise from `12 o'clock` as `levelTimeRemaining` runs down.
+  counterclockwise from `12 o'clock` as `levelTimeRemaining` runs down, with the remaining whole
+  seconds drawn inside the disc.
 - Browser automation relies on `window.advanceTime(ms)` and `window.render_game_to_text()`.
 - Reusable smoke inputs belong in `playwright_scripts/`, and generated validation artifacts belong
   in `tmp/`.

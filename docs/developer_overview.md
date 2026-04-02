@@ -32,7 +32,8 @@
   and only switches to flat closed lines in the actual game-over asleep state. A rounded
   wakefulness bar is drawn from the same state just above his head, shifting from green at full
   wakefulness through yellow to red at `10%` or lower. A semi-transparent grey timer disc sits
-  above it and empties counterclockwise from `12 o'clock` based on `levelTimeRemaining`.
+  above it and empties counterclockwise from `12 o'clock` based on `levelTimeRemaining`, with the
+  remaining whole seconds drawn in the center through a dedicated Phaser text object.
 - Above the canvas, the DOM now uses a simple dark-text status strip for `Level`, `Bonks`, and
   `Score`, while the pre-start instructions live inside the same centered overlay card later reused
   for briefings, game over, and victory states.
