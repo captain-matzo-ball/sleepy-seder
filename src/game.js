@@ -1977,7 +1977,7 @@ function updateOverlay(state) {
 
   state.dom.overlayCard.classList.toggle("overlay-card--menu", isMenu);
   state.dom.overlayMenu.hidden = !isMenu;
-  state.dom.overlayKicker.hidden = isMenu;
+  state.dom.overlayKicker.hidden = false;
   state.dom.overlayBody.hidden = isMenu;
 
   if (state.mode === "playing") {
@@ -1988,6 +1988,7 @@ function updateOverlay(state) {
   state.dom.overlay.classList.remove("is-hidden");
 
   if (state.mode === "menu") {
+    state.dom.overlayKicker.textContent = "Captain Matzo Ball Presents";
     state.dom.overlayTitle.textContent = "Sleepy Seder";
     state.dom.overlayAction.textContent = "Press Enter or tap the table to begin";
     return;

@@ -229,3 +229,5 @@ Validation:
   reload!` in a short-lived box beside the soup bowl.
 - Retuned that reload hint so it now stays fully visible for `1s` before fading out over another
   `1s`.
+- Added `Captain Matzo Ball Presents` as the small menu kicker above the `Sleepy Seder` title on
+  the opening intro card.
