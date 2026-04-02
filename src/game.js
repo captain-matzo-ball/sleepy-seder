@@ -6,17 +6,28 @@ const MAX_WAKEFULNESS = 50;
 const STARTING_WAKEFULNESS = MAX_WAKEFULNESS;
 const BASE_WAKE_DRAIN_PER_SECOND = 6.4;
 const LEVEL_DURATION_SECONDS = 20;
-const LEVEL_DRAIN_STEP = 0.05;
+const LEVEL_DRAIN_STEP = 0.04;
 const AIM_SPEED = 2.1;
 const BASE_SHOT_SPEED = 520;
 const BONUS_SHOT_SPEED = 360;
 const SHOT_GRAVITY = 780;
+const HEAD_HIT_MULTIPLIER = 1.5;
+const BODY_HIT_MULTIPLIER = 0.67;
+const BASE_HEAD_HIT_SCORE = 140;
+const BASE_BODY_HIT_SCORE = 90;
+const BASE_HEAD_HIT_WAKE = 22;
+const BASE_BODY_HIT_WAKE = 14;
+const HEAD_HIT_SCORE = Math.round(BASE_HEAD_HIT_SCORE * HEAD_HIT_MULTIPLIER);
+const BODY_HIT_SCORE = Math.round(BASE_BODY_HIT_SCORE * BODY_HIT_MULTIPLIER);
+const HEAD_HIT_WAKE = BASE_HEAD_HIT_WAKE * HEAD_HIT_MULTIPLIER;
+const BODY_HIT_WAKE = BASE_BODY_HIT_WAKE * BODY_HIT_MULTIPLIER;
 const RELOAD_MIN_ANGLE = (5 * Math.PI) / 180;
 const RELOAD_MAX_ANGLE = (15 * Math.PI) / 180;
 const RELOAD_HOLD_SECONDS = 0.18;
 const LOCUST_SPLAT_SECONDS = 2.8;
 const FROG_ATTACK_INTERVAL = 3;
 const FROG_TONGUE_DURATION = 0.72;
+const HEADSHOT_TEXT_LIFETIME = 0.75;
 const RIBBIT_PLAYBACK_RATE_VARIATION = 0.05;
 const RANDOM_SEED = 0x53454452;
 
@@ -45,12 +56,12 @@ const LEVEL_DEFINITIONS = [
     level: 3,
     threatLabel: "Frogs",
     locustCount: 0,
-    frogCount: 2,
+    frogCount: 4,
     announcements: [
       {
         kicker: "Level 3",
         title: "Oh no! A plague of frogs!",
-        body: "Two frogs are lining the table. Their tongues fire every few seconds, and even their bad aim can still ruin a shot.",
+        body: "Four frogs are lining the table. Their tongues fire every few seconds, and even their bad aim can still ruin a shot.",
       },
     ],
   },
@@ -58,7 +69,7 @@ const LEVEL_DEFINITIONS = [
     level: 4,
     threatLabel: "Locusts + Frogs",
     locustCount: 5,
-    frogCount: 2,
+    frogCount: 4,
     announcements: [
       {
         kicker: "Level 4",
@@ -244,6 +255,7 @@ function createGameState(dom, initialSize) {
     wakefulness: STARTING_WAKEFULNESS,
     projectiles: [],
     particles: [],
+    floatingTexts: [],
     spoon: {
       loaded: true,
       reloadProgress: 1,
@@ -363,6 +375,8 @@ function createLayout(size) {
     frogY: tableTopY - size.height * 0.036,
     frogLeftX: size.width * 0.41,
     frogRightX: size.width * 0.58,
+    frogLaneStartX: size.width * 0.34,
+    frogLaneEndX: size.width * 0.61,
     frogBodyRadius: size.height * 0.036,
     locustMinX: size.width * 0.32,
     locustMaxX: size.width * 0.93,
@@ -393,6 +407,7 @@ function resetRound(state, mode) {
   state.wakefulness = STARTING_WAKEFULNESS;
   state.projectiles = [];
   state.particles = [];
+  clearFloatingTexts(state);
   state.spoon.loaded = true;
   state.spoon.reloadProgress = 1;
   state.aim.angle = -0.82;
@@ -446,6 +461,7 @@ function startLevel(state, level, useAnnouncements) {
   state.wakefulness = STARTING_WAKEFULNESS;
   state.projectiles = [];
   state.particles = [];
+  clearFloatingTexts(state);
   state.spoon.loaded = true;
   state.spoon.reloadProgress = 1;
   state.aim.angle = -0.82;
@@ -459,13 +475,13 @@ function startLevel(state, level, useAnnouncements) {
   state.dad.snoreTimer = 0.7;
   state.hazards.locusts = createLocusts(state, config.locustCount);
   state.hazards.frogs = createFrogs(state, config.frogCount);
-  playLevelStartCue(state, config.level);
 
   if (useAnnouncements && config.announcements.length > 0) {
-    startAnnouncementSequence(state, config.announcements, "playing");
+    startAnnouncementSequence(state, config.level, config.announcements, "playing");
     return;
   }
 
+  playLevelStartCue(state, config.level);
   clearAnnouncementState(state);
   state.mode = "playing";
 }
@@ -483,6 +499,7 @@ function enterGameOver(state) {
   state.mode = "gameover";
   state.wakefulness = 0;
   state.projectiles = [];
+  clearFloatingTexts(state);
   state.aim.isCharging = false;
   state.aim.source = null;
   stopAudioCue(state.audio.levelStartCue);
@@ -496,6 +513,7 @@ function enterVictory(state) {
   state.mode = "victory";
   state.levelTimeRemaining = 0;
   state.projectiles = [];
+  clearFloatingTexts(state);
   state.hazards.locusts = [];
   state.hazards.frogs = [];
   state.aim.isCharging = false;
@@ -503,12 +521,13 @@ function enterVictory(state) {
   state.spoon.loaded = true;
   state.spoon.reloadProgress = 1;
   stopAudioCue(state.audio.snoreCue);
+  playLevelStartCue(state, state.level);
   clearAnnouncementState(state);
   updateOverlay(state);
   syncUi(state);
 }
 
-function startAnnouncementSequence(state, cards, nextMode) {
+function startAnnouncementSequence(state, level, cards, nextMode) {
   state.mode = "announcement";
   state.announcement.cards = cards.map((card) => ({
     kicker: card.kicker,
@@ -519,6 +538,7 @@ function startAnnouncementSequence(state, cards, nextMode) {
   state.announcement.current = state.announcement.cards[0] || null;
   state.announcement.awaitingAdvance = true;
   state.announcement.nextMode = nextMode;
+  playLevelStartCue(state, level);
 }
 
 function advanceAnnouncementCard(state) {
@@ -668,6 +688,14 @@ function stopImpactCues(state) {
   }
 }
 
+function clearFloatingTexts(state) {
+  for (const floatingText of state.floatingTexts) {
+    floatingText.textObject.destroy();
+  }
+
+  state.floatingTexts = [];
+}
+
 function clearAnnouncementState(state) {
   state.announcement.cards = [];
   state.announcement.index = 0;
@@ -755,6 +783,7 @@ function advancePlayingState(state, deltaSeconds) {
   updateDadState(state, deltaSeconds);
   updateProjectiles(state, deltaSeconds);
   updateParticles(state, deltaSeconds);
+  updateFloatingTexts(state, deltaSeconds);
   state.wakefulness -= BASE_WAKE_DRAIN_PER_SECOND * readWakeDrainMultiplier(state) * deltaSeconds;
 
   if (state.wakefulness <= 0) {
@@ -771,12 +800,14 @@ function advanceAnnouncementState(state, deltaSeconds) {
   state.time += deltaSeconds;
   updateDadState(state, deltaSeconds);
   updateParticles(state, deltaSeconds);
+  updateFloatingTexts(state, deltaSeconds);
 }
 
 function advancePreviewState(state, deltaSeconds) {
   state.time += deltaSeconds;
   updateDadState(state, deltaSeconds);
   updateParticles(state, deltaSeconds);
+  updateFloatingTexts(state, deltaSeconds);
 }
 
 function updateAimFromKeyboard(state, deltaSeconds) {
@@ -952,7 +983,8 @@ function startFrogTongueAttack(state, frog) {
   const horizontalStart = state.size.width * 0.34;
   const horizontalSpan = state.size.width * 0.42;
   const verticalStart = state.size.height * 0.04;
-  const verticalSpan = layout.tableTopY - state.size.height * 0.06 - verticalStart;
+  const verticalEnd = state.size.height * 0.5;
+  const verticalSpan = verticalEnd - verticalStart;
 
   frog.tongue.active = true;
   frog.tongue.elapsed = 0;
@@ -1107,10 +1139,13 @@ function registerHit(state, projectile, target) {
   const isHeadshot = target === "head";
 
   state.bonks += 1;
-  state.score += isHeadshot ? 140 : 90;
-  state.wakefulness = Math.min(MAX_WAKEFULNESS, state.wakefulness + (isHeadshot ? 22 : 14));
+  state.score += isHeadshot ? HEAD_HIT_SCORE : BODY_HIT_SCORE;
+  state.wakefulness = Math.min(MAX_WAKEFULNESS, state.wakefulness + (isHeadshot ? HEAD_HIT_WAKE : BODY_HIT_WAKE));
   state.dad.recoil = isHeadshot ? 0.42 : 0.28;
   playImpactCue(state);
+  if (isHeadshot) {
+    spawnHeadshotText(state, projectile.x, projectile.y - state.layout.dadHeadRadius * 0.2);
+  }
   spawnBurst(state, projectile.x, projectile.y, "star", isHeadshot ? 10 : 7);
   spawnBurst(state, projectile.x, projectile.y, "crumb", 8);
 }
@@ -1141,6 +1176,27 @@ function updateParticles(state, deltaSeconds) {
   }
 
   state.particles = nextParticles;
+}
+
+function updateFloatingTexts(state, deltaSeconds) {
+  const nextFloatingTexts = [];
+
+  for (const floatingText of state.floatingTexts) {
+    floatingText.life -= deltaSeconds;
+
+    if (floatingText.life <= 0) {
+      floatingText.textObject.destroy();
+      continue;
+    }
+
+    floatingText.x += floatingText.vx * deltaSeconds;
+    floatingText.y += floatingText.vy * deltaSeconds;
+    floatingText.textObject.setPosition(floatingText.x, floatingText.y);
+    floatingText.textObject.setAlpha(floatingText.life / floatingText.maxLife);
+    nextFloatingTexts.push(floatingText);
+  }
+
+  state.floatingTexts = nextFloatingTexts;
 }
 
 function spawnBurst(state, x, y, type, count) {
@@ -1175,6 +1231,34 @@ function spawnSnore(state) {
     life: 1.2,
     maxLife: 1.2,
     radius: size,
+  });
+}
+
+function spawnHeadshotText(state, x, y) {
+  if (!state.scene) {
+    throw new Error("Cannot spawn a headshot label before the sleepy_seder scene exists.");
+  }
+
+  const textObject = state.scene.add.text(x, y, "HEADSHOT!", {
+    fontFamily: "Georgia, serif",
+    fontSize: `${Math.max(18, Math.round(state.size.height * 0.024))}px`,
+    fontStyle: "700",
+    color: "#b81422",
+    stroke: "#fff2dc",
+    strokeThickness: 3,
+  });
+  textObject.setOrigin(0.5);
+  textObject.setDepth(14);
+
+  state.floatingTexts.push({
+    label: "HEADSHOT!",
+    x,
+    y,
+    vx: 0,
+    vy: -48,
+    life: HEADSHOT_TEXT_LIFETIME,
+    maxLife: HEADSHOT_TEXT_LIFETIME,
+    textObject,
   });
 }
 
@@ -1400,6 +1484,7 @@ function drawDad(graphics, state) {
   const dadPose = readDadPose(state);
   const sleepiness = getSleepinessFactor(state);
   const eyeOpen = 1.1 - sleepiness * 0.78 + state.dad.recoil * 0.8;
+  const isAsleep = state.mode === "gameover";
 
   graphics.fillStyle(0x6b4b2b, 0.58);
   graphics.fillRoundedRect(
@@ -1441,27 +1526,29 @@ function drawDad(graphics, state) {
   graphics.fillStyle(0x4a1b1d, 1);
   graphics.fillEllipse(dadPose.headX, dadPose.headY - dadPose.headRadius * 0.88, dadPose.headRadius * 1.3, dadPose.headRadius * 0.55);
 
-  graphics.lineStyle(3, 0x322220, 1);
-  graphics.beginPath();
-  graphics.moveTo(dadPose.headX - dadPose.headRadius * 0.38, dadPose.headY - dadPose.headRadius * 0.02);
-  graphics.lineTo(dadPose.headX - dadPose.headRadius * 0.1, dadPose.headY - dadPose.headRadius * 0.02);
-  graphics.moveTo(dadPose.headX + dadPose.headRadius * 0.1, dadPose.headY - dadPose.headRadius * 0.02);
-  graphics.lineTo(dadPose.headX + dadPose.headRadius * 0.38, dadPose.headY - dadPose.headRadius * 0.02);
-  graphics.strokePath();
-
-  graphics.fillStyle(0x322220, 1);
-  graphics.fillEllipse(
-    dadPose.headX - dadPose.headRadius * 0.24,
-    dadPose.headY,
-    dadPose.headRadius * 0.12,
-    dadPose.headRadius * 0.07 + dadPose.headRadius * 0.18 * eyeOpen
-  );
-  graphics.fillEllipse(
-    dadPose.headX + dadPose.headRadius * 0.24,
-    dadPose.headY,
-    dadPose.headRadius * 0.12,
-    dadPose.headRadius * 0.07 + dadPose.headRadius * 0.18 * eyeOpen
-  );
+  if (isAsleep) {
+    graphics.lineStyle(3, 0x322220, 1);
+    graphics.beginPath();
+    graphics.moveTo(dadPose.headX - dadPose.headRadius * 0.38, dadPose.headY - dadPose.headRadius * 0.02);
+    graphics.lineTo(dadPose.headX - dadPose.headRadius * 0.1, dadPose.headY - dadPose.headRadius * 0.02);
+    graphics.moveTo(dadPose.headX + dadPose.headRadius * 0.1, dadPose.headY - dadPose.headRadius * 0.02);
+    graphics.lineTo(dadPose.headX + dadPose.headRadius * 0.38, dadPose.headY - dadPose.headRadius * 0.02);
+    graphics.strokePath();
+  } else {
+    graphics.fillStyle(0x322220, 1);
+    graphics.fillEllipse(
+      dadPose.headX - dadPose.headRadius * 0.24,
+      dadPose.headY,
+      dadPose.headRadius * 0.12,
+      dadPose.headRadius * 0.07 + dadPose.headRadius * 0.18 * eyeOpen
+    );
+    graphics.fillEllipse(
+      dadPose.headX + dadPose.headRadius * 0.24,
+      dadPose.headY,
+      dadPose.headRadius * 0.12,
+      dadPose.headRadius * 0.07 + dadPose.headRadius * 0.18 * eyeOpen
+    );
+  }
 
   graphics.lineStyle(3, 0x8e4f3d, 1);
   graphics.beginPath();
@@ -1722,6 +1809,12 @@ function renderGameToText(state) {
       count: state.hazards.frogs.length,
       tonguesActive: state.hazards.frogs.filter((frog) => frog.tongue.active).length,
     },
+    floatingTexts: state.floatingTexts.map((floatingText) => ({
+      label: floatingText.label,
+      x: roundNumber(floatingText.x, 1),
+      y: roundNumber(floatingText.y, 1),
+      life: roundNumber(floatingText.life, 2),
+    })),
     audio: {
       playing: !state.audio.levelStartCue.paused,
       currentTime: roundNumber(state.audio.levelStartCue.currentTime, 2),
@@ -1793,7 +1886,7 @@ function createLocusts(state, count) {
 function createFrogs(state, count) {
   const layout = readLayout(state);
   const frogs = [];
-  const positions = [layout.frogLeftX, layout.frogRightX];
+  const positions = readFrogPositions(layout, count);
 
   for (let index = 0; index < count; index += 1) {
     frogs.push({
@@ -1814,6 +1907,23 @@ function createFrogs(state, count) {
   }
 
   return frogs;
+}
+
+function readFrogPositions(layout, count) {
+  if (count <= 0) {
+    return [];
+  }
+
+  if (count === 1) {
+    return [(layout.frogLaneStartX + layout.frogLaneEndX) * 0.5];
+  }
+
+  if (count === 2) {
+    return [layout.frogLeftX, layout.frogRightX];
+  }
+
+  const spacing = (layout.frogLaneEndX - layout.frogLaneStartX) / (count - 1);
+  return Array.from({ length: count }, (_unused, index) => layout.frogLaneStartX + spacing * index);
 }
 
 function readDadPose(state) {
@@ -2016,7 +2126,7 @@ function readFrogTongueState(frog) {
 
 function realignHazardsToLayout(state) {
   const layout = readLayout(state);
-  const frogPositions = [layout.frogLeftX, layout.frogRightX];
+  const frogPositions = readFrogPositions(layout, state.hazards.frogs.length);
 
   for (const locust of state.hazards.locusts) {
     if (locust.mode === "gone") {

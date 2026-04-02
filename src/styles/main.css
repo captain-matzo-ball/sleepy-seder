@@ -20,18 +20,32 @@ body {
   overflow: hidden;
 }
 
-.hud {
+.hud-layout {
   position: absolute;
   top: 1.2rem;
   left: 1.2rem;
+  right: 1.2rem;
   z-index: 3;
-  width: min(24rem, 100vw - 2.4rem);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  pointer-events: none;
+}
+
+.hud-panel {
+  width: min(24rem, (100vw - 3.4rem) / 2);
   padding: 1.15rem 1.2rem 1.2rem;
   border: 1px solid rgba(240, 204, 138, 0.44);
   border-radius: 1.35rem;
   background: rgba(72, 19, 31, 0.84);
   backdrop-filter: blur(0.75rem);
   box-shadow: 0 1.35rem 3.4rem rgba(69, 21, 33, 0.24);
+  pointer-events: auto;
+}
+
+.hud-panel--status {
+  width: min(20rem, (100vw - 3.4rem) / 2);
 }
 
 .eyebrow {
@@ -43,7 +57,7 @@ body {
   text-transform: uppercase;
 }
 
-.hud h1,
+.hud-panel h1,
 .overlay-card h2 {
   margin: 0;
   font-size: 2.8rem;
@@ -161,13 +175,19 @@ body {
 }
 
 @media (max-width: 640px) {
-  .hud {
+  .hud-layout {
     top: 0.75rem;
     left: 0.75rem;
-    width: calc(100vw - 1.5rem);
+    right: 0.75rem;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .hud-panel,
+  .hud-panel--status {
+    width: 100%;
     padding: 1rem;
   }
-  .hud h1,
+  .hud-panel h1,
   .overlay-card h2 {
     font-size: 2.2rem;
   }

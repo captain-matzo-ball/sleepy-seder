@@ -11,8 +11,8 @@
     - [x] Let each locust splat disappear after a few seconds.
   - [x] Level 3:
     - [x] Pop up `Oh no! A plague of frogs!` before the level starts.
-    - [x] Spawn 2 frogs that try to catch matzo balls with random tongue shots.
-    - [x] Stagger frog tongue timing across the two frogs.
+    - [x] Spawn 4 frogs that try to catch matzo balls with random tongue shots.
+    - [x] Stagger frog tongue timing across the frog group.
   - [x] Level 4:
     - [x] Show `Oh no! Death of the firstborn!`
     - [x] Follow it with `Just kidding! Locusts AND frogs!`

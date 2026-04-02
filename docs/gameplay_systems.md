@@ -21,9 +21,9 @@
 - Wakefulness drains `5%` faster per level, so later rounds punish missed shots more aggressively.
 - Level 1 is the baseline table.
 - Level 2 announces a locust plague before the timer starts.
-- Level 3 announces a frog plague before the timer starts.
+- Level 3 announces a frog plague before the timer starts, and it now uses four frogs.
 - Level 4 plays two cards in sequence: `Oh no! Death of the firstborn!` and then `Just kidding!
-  Locusts AND frogs!`
+  Locusts AND frogs!`, with four frogs still active there as well.
 
 ## Controls
 
@@ -41,8 +41,8 @@
 
 - Dad starts each run with `50` wakefulness, and the meter cannot rise above `50`.
 - Wakefulness drains continuously during live play; the round ends as soon as it reaches zero.
-- Body hits restore wakefulness and score points, while head hits restore more wakefulness and score
-  a larger bonus.
+- Head hits now restore `1.5x` their previous wakefulness and score payout, while body hits restore
+  `0.67x` of their previous payout.
 - `Bonks` counts successful hits rather than total shots, so the HUD stays focused on the objective.
 
 ## Hazards
@@ -50,9 +50,9 @@
 - Locusts appear in levels 2 and 4. They now travel mostly up and down through a lane that reaches
   down to the table, and a matzo ball that touches one creates a temporary splat and disappears
   instead of reaching Dad.
-- Frog hazards appear in levels 3 and 4. Two frogs sit on the table and fire tongues with staggered
-  cooldowns toward random targets every few seconds, and those targets can now reach far higher
-  into the room.
+- Frog hazards appear in levels 3 and 4. Four frogs sit on the table and fire tongues with
+  staggered cooldowns toward random targets every few seconds, and those targets can now reach far
+  higher into the room while never dipping below halfway up the screen.
 - Frog tongues can intercept a matzo ball mid-flight. A successful catch cancels the projectile and
   triggers a brief catch flash on the frog.
 - Every tongue launch plays `sounds/Ribbit.mp3` with a slight random pitch shift inside a `±5%`
@@ -79,10 +79,12 @@
 - Dad’s head slump, eye openness, and snore particles are all derived from the current sleepiness
   state rather than from separate animation clips.
 - Hits generate crumbs and starburst particles to keep the scene readable even without sound.
+- Head hits also spawn a small red `HEADSHOT!` label that floats upward and fades out over `0.75s`.
 - Announcement cards and the HUD explain which plague is active and how far through the seder run
   the player has progressed.
-- Every level start rewinds and replays `sounds/Chad Gadya.mp3`, so the run gets an audible cue
-  whenever the next stage begins.
+- `sounds/Chad Gadya.mp3` rewinds and replays when a level briefing first appears, or immediately
+  on levels without a briefing, so the run gets an audible cue before each stage and again on
+  victory.
 - Dad falling asleep stops the level music and plays `sounds/Snore.mp3` as the failure cue.
 
 ## Automation hooks
@@ -91,5 +93,5 @@
 - `window.render_game_to_text()` returns JSON describing the visible state so browser automation can
   verify gameplay behavior without inspecting pixels alone, including whether the level-start audio
   is playing, whether the `Ribbit` and `Gulp` cues are active, the current ribbit playback rate,
-  which impact cue played most recently, whether an announcement is waiting for dismissal, and
-  whether the game-over snore cue is active.
+  which impact cue played most recently, which floating hit labels are visible, whether an
+  announcement is waiting for dismissal, and whether the game-over snore cue is active.

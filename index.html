@@ -10,46 +10,51 @@
   </head>
   <body>
     <main class="app-shell">
-      <aside class="hud" aria-label="Sleepy Seder status">
-        <p class="eyebrow">Phaser Tabletop Arcade</p>
-        <h1>Sleepy Seder</h1>
-        <p class="summary">
-          Survive four seder levels by bonking Dad awake, reloading from the soup bowl, and dealing
-          with whatever new plague shows up when another wine glass runs dry.
-        </p>
-        <dl class="telemetry">
-          <div>
-            <dt>Mode</dt>
-            <dd id="mode-value">Menu</dd>
-          </div>
-          <div>
-            <dt>Level</dt>
-            <dd id="level-value">1 / 4</dd>
-          </div>
-          <div>
-            <dt>Time Left</dt>
-            <dd id="time-value">20s</dd>
-          </div>
-          <div>
-            <dt>Wake Meter</dt>
-            <dd id="wake-value">50</dd>
-          </div>
-          <div>
-            <dt>Score</dt>
-            <dd id="score-value">0</dd>
-          </div>
-          <div>
-            <dt>Bonks</dt>
-            <dd id="hits-value">0</dd>
-          </div>
-        </dl>
-        <ul class="controls" aria-label="Controls">
-          <li><span>Aim</span><strong>Arrows / WASD / Pointer</strong></li>
-          <li><span>Charge &amp; Fire</span><strong>Hold + release Space / Tap</strong></li>
-          <li><span>Reload</span><strong>Dip into soup at 5-15° down</strong></li>
-          <li><span>Start / Continue / Restart</span><strong>Enter</strong></li>
-        </ul>
-      </aside>
+      <header class="hud-layout" aria-label="Sleepy Seder interface">
+        <aside class="hud-panel hud-panel--info" aria-label="Sleepy Seder instructions">
+          <p class="eyebrow">Phaser Tabletop Arcade</p>
+          <h1>Sleepy Seder</h1>
+          <p class="summary">
+            Survive four seder levels by bonking Dad awake, reloading from the soup bowl, and
+            dealing with whatever new plague shows up when another wine glass runs dry.
+          </p>
+          <ul class="controls" aria-label="Controls">
+            <li><span>Aim</span><strong>Arrows / WASD / Pointer</strong></li>
+            <li><span>Charge &amp; Fire</span><strong>Hold + release Space / Tap</strong></li>
+            <li><span>Reload</span><strong>Dip into soup at 5-15° down</strong></li>
+            <li><span>Start / Continue / Restart</span><strong>Enter</strong></li>
+          </ul>
+        </aside>
+        <aside class="hud-panel hud-panel--status" aria-label="Sleepy Seder status">
+          <p class="eyebrow">Round Status</p>
+          <dl class="telemetry">
+            <div>
+              <dt>Mode</dt>
+              <dd id="mode-value">Menu</dd>
+            </div>
+            <div>
+              <dt>Level</dt>
+              <dd id="level-value">1 / 4</dd>
+            </div>
+            <div>
+              <dt>Time Left</dt>
+              <dd id="time-value">20s</dd>
+            </div>
+            <div>
+              <dt>Wake Meter</dt>
+              <dd id="wake-value">50</dd>
+            </div>
+            <div>
+              <dt>Score</dt>
+              <dd id="score-value">0</dd>
+            </div>
+            <div>
+              <dt>Bonks</dt>
+              <dd id="hits-value">0</dd>
+            </div>
+          </dl>
+        </aside>
+      </header>
       <section class="overlay" id="overlay" aria-live="polite">
         <div class="overlay-card">
           <p class="eyebrow" id="overlay-kicker">Matzo Ball Emergency</p>

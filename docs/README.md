@@ -16,10 +16,13 @@
   four-level campaign with announcement cards and escalating hazards.
 - Announcement cards now remain on screen until the player clicks or presses `Enter` to advance
   them, instead of auto-dismissing on a timer.
+- Dad hit rewards are now retuned: headshots pay `1.5x` the previous score and wakefulness gain,
+  while body hits pay `0.67x`.
 - The goblet cluster now sits slightly tighter together, and campaign progress empties the glasses
   starting from the one closest to Dad.
-- Level starts now restart `sounds/Chad Gadya.mp3`, and the automation text state exposes the cue
-  status for verification.
+- `sounds/Chad Gadya.mp3` now restarts when a level briefing first appears, or immediately on
+  levels without a briefing, and it also replays on victory; the automation text state exposes the
+  cue status for verification.
 - Game-over transitions now also play `sounds/Snore.mp3`, and that cue is exposed through the same
   automation state output.
 - Matzo-ball impacts now rotate through `sounds/Splat1.mp3`, `Splat2.mp3`, and `Splat3.mp3`, and
@@ -27,8 +30,15 @@
 - Frog tongues now play `sounds/Ribbit.mp3` on launch and `sounds/Gulp.mp3` on catches, and the
   automation text state exposes both cue states plus the current ribbit playback rate for
   verification.
-- Frog tongue targeting now reaches much farther upward into the room, rather than staying in a
-  narrow band above the table.
+- Frog levels now field four frogs instead of two.
+- Frog tongue targeting now reaches much farther upward into the room, but never targets below the
+  halfway point of the screen.
+- Headshots now spawn a floating `HEADSHOT!` label, and the automation text state exposes active
+  floating text labels for verification.
+- The page HUD is now split into an upper-left instruction panel and an upper-right telemetry
+  panel, instead of packing both into one top-left card.
+- Dad now keeps oval eyes while awake or drooping, and only switches to flat closed-eye lines in
+  the actual asleep game-over state.
 - Browser automation relies on `window.advanceTime(ms)` and `window.render_game_to_text()`.
 - Reusable smoke inputs belong in `playwright_scripts/`, and generated validation artifacts belong
   in `tmp/`.

@@ -126,3 +126,37 @@ Validation:
 - Added a focused announcement-click verification in `tmp/announcement-click-check-01/`, confirming
   level-2 and level-4 cards stayed open after `5s` of simulated time and only advanced when
   clicked, with level 4 still requiring two separate clicks.
+- Added the approved hit retuning: head hits now award `210` score and `33` wakefulness, while body
+  hits now award `60` score and `9.38` wakefulness.
+- Added a floating `HEADSHOT!` popup on head hits using short-lived Phaser text objects that rise
+  upward and fade out over `0.75s`.
+- Increased frog levels from two frogs to four and spread them across a wider table lane so tongue
+  attacks happen about twice as often overall.
+- Tightened frog tongue target selection so the lowest possible target now stays above mid-screen.
+- Extended `render_game_to_text()` with `floatingTexts` so browser checks can verify active
+  headshot labels directly.
+- Reran the baseline smoke loop into `tmp/smoke-run-13/`; the canned level-1 input now reached
+  `score: 270`, and the text state captured an active `HEADSHOT!` label during live play.
+- Added a focused hit-and-frog verification in `tmp/headshot-frogs-check-01/`, confirming the new
+  head/body hit payouts, confirming the headshot label appears then disappears, confirming level 3
+  now contains four frogs, and confirming sampled frog tongue targets stayed at or above
+  `y = 323.34` in the default `720px` viewport, which is above the `360px` half-screen line.
+- Moved the `sounds/Chad Gadya.mp3` restart so briefing levels now play it when the first
+  announcement card appears instead of waiting for live play to begin, while levels without a
+  briefing still trigger it immediately at level start.
+- Reused the same cue on victory so the win screen gets the same musical sting as a new round.
+- Reran the baseline smoke loop into `tmp/smoke-run-14/`; level 1 still started cleanly with the
+  cue active and `audio.playCount: 1`.
+- Added a focused timing verification in `tmp/chad-gadya-timing-check-01/`, confirming level 2
+  and the first level-4 card replay the cue when their briefings open, later announcement clicks
+  do not replay it, and the victory transition replays it once more with no reported errors.
+- Split the page HUD into two top panels so the title, summary, and controls sit in the upper left
+  while the live telemetry boxes move to the upper right.
+- Cleaned up Dad's eye rendering so oval eyes draw while he is awake or drooping and the flat
+  closed-eye lines only appear once he actually enters the asleep game-over state.
+- Recompiled `src/styles/main.scss` after the HUD split and rechecked `src/game.js` with
+  `node --check`.
+- Added visual verification captures for the new layout and eye states: `tmp/ui-layout-check-01-awake/`
+  confirms the live-play oval-eye rendering, `tmp/ui-layout-check-01-asleep/` confirms the closed-eye
+  game-over rendering, and `tmp/ui-layout-check-02-menu.png` captures the split upper-left/upper-right
+  HUD layout in a full-page browser shot.

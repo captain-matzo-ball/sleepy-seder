@@ -4,13 +4,19 @@ Sleepy Seder is a one-screen Phaser arcade game about keeping your dad awake thr
 catapulting matzo balls at him with a giant spoon, then dipping back into the soup bowl to reload.
 The shipped game now runs as a four-level seder campaign: each stage lasts `20` seconds, another
 wine glass empties beside Dad, wakefulness resets to the `50`-point cap between levels, and later
-rounds add locust and frog hazards. Each new level also restarts `sounds/Chad Gadya.mp3`, and
-Dad falling asleep now plays `sounds/Snore.mp3`. Any matzo-ball impact on Dad, the table, or
-locusts also triggers a rotating `sounds/Splat1.mp3` / `Splat2.mp3` / `Splat3.mp3` cue. Frogs
+rounds add locust and frog hazards. `sounds/Chad Gadya.mp3` now restarts when a level briefing
+first appears, or immediately on levels without a briefing, and it also replays on victory. Dad
+falling asleep now plays `sounds/Snore.mp3`. Any matzo-ball impact on Dad, the table, or locusts
+also triggers a rotating `sounds/Splat1.mp3` / `Splat2.mp3` / `Splat3.mp3` cue. Frogs
 now play `sounds/Ribbit.mp3` when they fire a tongue with a slight random pitch shift of up to
 `5%` either way, and `sounds/Gulp.mp3` when a tongue catches a matzo ball. Frog tongues can now
-also target much higher into the room instead of staying close to the tabletop. Inter-level
-briefing cards no longer auto-close; they now wait for a click or `Enter` press.
+also target much higher into the room instead of staying close to the tabletop, and they never aim
+below halfway up the screen. Levels 3 and 4 now use four frogs instead of two. Head hits now do
+`1.5x` their previous reward, body hits do `0.67x`, and headshots spawn a small floating
+`HEADSHOT!` popup that fades out over `0.75s`. Inter-level briefing cards no longer auto-close;
+they now wait for a click or `Enter` press. The page HUD is now split between an upper-left
+instruction panel and upper-right status tiles, and Dad's eye art now uses oval eyes while awake
+and flat closed lines only after he finally falls asleep.
 
 ## Files
 
