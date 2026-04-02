@@ -43,7 +43,8 @@
 - Wakefulness drains continuously during live play; the round ends as soon as it reaches zero.
 - Head hits now restore `1.5x` their previous wakefulness and score payout, while body hits restore
   `0.67x` of their previous payout.
-- `Bonks` counts successful hits rather than total shots, so the HUD stays focused on the objective.
+- `Bonks` counts successful hits rather than total shots, so the top status strip stays focused on
+  the objective.
 
 ## Hazards
 
@@ -77,18 +78,20 @@
 ## Presentation
 
 - The whole game now renders inside a fixed landscape `5:3` stage, so the visible playfield keeps
-  the same proportions across browser sizes while the HUD and overlays scale with it.
+  the same proportions across browser sizes while the top status strip and overlays scale with it.
 - Dad’s head slump, eye openness, and snore particles are all derived from the current sleepiness
   state rather than from separate animation clips.
 - Dad also carries a rounded wakefulness bar above his head that shifts from green at full
   wakefulness through yellow to red at `10%` or lower, so the target's current alertness is
-  legible in the canvas even while the HTML HUD is elsewhere.
+  legible directly in the canvas instead of relying on a separate meter panel.
 - Above that bar, a semi-transparent grey timer disc empties counterclockwise from `12 o'clock` as
   the active level timer runs down, while briefings leave it full.
 - Hits generate crumbs and starburst particles to keep the scene readable even without sound.
 - Head hits also spawn a small red `HEADSHOT!` label that floats upward and fades out over `0.75s`.
-- Announcement cards and the HUD explain which plague is active and how far through the seder run
-  the player has progressed.
+- The start menu uses one centered intro card with the controls in it, while live play shows only
+  a dark-text top strip for `Level`, `Bonks`, and `Score`.
+- Announcement cards and the status strip explain which plague is active and how far through the
+  seder run the player has progressed.
 - `sounds/Chad Gadya.mp3` rewinds and replays when each level briefing first appears, including the
   level-1 popup that shows right after the player starts, so the run gets an audible cue before
   each stage and again on victory.

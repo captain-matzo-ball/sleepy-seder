@@ -2,23 +2,23 @@
 
 ## Structure
 
-- `index.html` provides the centered fixed-`5:3` stage shell, split top-left/top-right HUD panels,
-  overlay card, game root, and script loading order.
+- `index.html` provides the centered fixed-`5:3` stage shell, the top status strip, the shared
+  overlay card, the Phaser mount point, and script loading order.
 - `vendor/phaser.js` is the locally vendored Phaser runtime loaded before the game bootstraps.
 - `src/game.js` owns Phaser bootstrapping, DOM validation, input wiring, deterministic stepping,
   scene drawing, collision checks, four-level campaign flow, wakefulness decay, hazard state, and
   UI synchronization.
 - `src/game.js` also owns the reusable HTML audio elements for the level-start `Chad Gadya` cue,
   the game-over `Snore` cue, the frog `Ribbit` and `Gulp` cues, and the three `Splat` impact cues.
-- `src/styles/main.scss` defines the source styling for the HUD, overlay, and page shell.
+- `src/styles/main.scss` defines the source styling for the status strip, overlay, and page shell.
 - `src/styles/main.css` is generated from the SCSS file and should not be edited by hand.
 - `playwright_scripts/smoke_actions.json` is the baseline deterministic smoke choreography.
 - `progress.md` tracks the original prompt, implementation decisions, and validation notes.
 
 ## Scene layout
 
-- The browser window now letterboxes a single landscape `5:3` stage, and both the DOM HUD and the
-  Phaser canvas key their size from that shared stage instead of from the viewport.
+- The browser window now letterboxes a single landscape `5:3` stage, and both the DOM overlay
+  chrome plus the Phaser canvas key their size from that shared stage instead of from the viewport.
 - The room, table, spoon, father, candles, dishes, projectiles, and particle effects are all drawn
   from Phaser graphics primitives, so the game has no external art pipeline.
 - The spoon launcher lives on the left side of the table and computes a ballistic launch vector from
@@ -33,6 +33,9 @@
   wakefulness bar is drawn from the same state just above his head, shifting from green at full
   wakefulness through yellow to red at `10%` or lower. A semi-transparent grey timer disc sits
   above it and empties counterclockwise from `12 o'clock` based on `levelTimeRemaining`.
+- Above the canvas, the DOM now uses a simple dark-text status strip for `Level`, `Bonks`, and
+  `Score`, while the pre-start instructions live inside the same centered overlay card later reused
+  for briefings, game over, and victory states.
 - Locusts now travel through a taller vertical lane that reaches down to the table edge, while
   frogs occupy fixed table positions and project tongues from explicit mouth coordinates into a much
   taller upward target band that stays above mid-screen. Levels 3 and 4 now place four frogs across
@@ -95,5 +98,6 @@
   `tmp/wake-bar-check-02/`, `tmp/wake-bar-color-check-01-green/`,
   `tmp/wake-bar-color-check-01-yellow/`, `tmp/wake-bar-color-check-01-red/`,
   `tmp/timer-pie-check-01-full/`, `tmp/timer-pie-check-01-mid/`, and
-  `tmp/timer-pie-check-02-near-empty/`, `tmp/aspect-ratio-check-01/`, and
-  `tmp/smoke-run-16/`. Keep newer runs in `tmp/` rather than mixing them into source files.
+  `tmp/timer-pie-check-02-near-empty/`, `tmp/aspect-ratio-check-01/`,
+  `tmp/smoke-run-16/`, `tmp/smoke-run-18/`, and `tmp/ui-layout-check-03/`. Keep newer runs in
+  `tmp/` rather than mixing them into source files.

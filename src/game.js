@@ -11,17 +11,11 @@ const AIM_SPEED = 2.1;
 const BASE_SHOT_SPEED = 520;
 const BONUS_SHOT_SPEED = 360;
 const SHOT_GRAVITY = 780;
-const HEAD_HIT_MULTIPLIER = 1.5;
-const BODY_HIT_MULTIPLIER = 0.67;
-const BASE_HEAD_HIT_SCORE = 140;
-const BASE_BODY_HIT_SCORE = 90;
-const BASE_HEAD_HIT_WAKE = 22;
-const BASE_BODY_HIT_WAKE = 14;
-const HEAD_HIT_SCORE = Math.round(BASE_HEAD_HIT_SCORE * HEAD_HIT_MULTIPLIER);
-const BODY_HIT_SCORE = Math.round(BASE_BODY_HIT_SCORE * BODY_HIT_MULTIPLIER);
-const HEAD_HIT_WAKE = BASE_HEAD_HIT_WAKE * HEAD_HIT_MULTIPLIER;
-const BODY_HIT_WAKE = BASE_BODY_HIT_WAKE * BODY_HIT_MULTIPLIER;
-const RELOAD_MIN_ANGLE = (5 * Math.PI) / 180;
+const HEAD_HIT_SCORE = 300;
+const BODY_HIT_SCORE = 50;
+const HEAD_HIT_WAKE = 30;
+const BODY_HIT_WAKE = 10;
+const RELOAD_MIN_ANGLE = (2 * Math.PI) / 180;
 const RELOAD_MAX_ANGLE = (20 * Math.PI) / 180;
 const RELOAD_HOLD_SECONDS = 0.18;
 const LOCUST_SPLAT_SECONDS = 2.8;
@@ -1837,6 +1831,13 @@ function drawParticles(graphics, state) {
 }
 
 function updateOverlay(state) {
+  const isMenu = state.mode === "menu";
+
+  state.dom.overlayCard.classList.toggle("overlay-card--menu", isMenu);
+  state.dom.overlayMenu.hidden = !isMenu;
+  state.dom.overlayKicker.hidden = isMenu;
+  state.dom.overlayBody.hidden = isMenu;
+
   if (state.mode === "playing") {
     state.dom.overlay.classList.add("is-hidden");
     return;
@@ -1845,10 +1846,7 @@ function updateOverlay(state) {
   state.dom.overlay.classList.remove("is-hidden");
 
   if (state.mode === "menu") {
-    state.dom.overlayKicker.textContent = "Matzo Ball Emergency";
-    state.dom.overlayTitle.textContent = "Keep Dad Awake For Four Levels";
-    state.dom.overlayBody.textContent =
-      "Survive four 20-second seder levels. Wake Dad up with matzo balls, refill from the soup bowl, and deal with each new plague as another glass empties.";
+    state.dom.overlayTitle.textContent = "Sleepy Seder";
     state.dom.overlayAction.textContent = "Press Enter or tap the table to begin";
     return;
   }
@@ -1878,10 +1876,7 @@ function updateOverlay(state) {
 }
 
 function syncUi(state) {
-  state.dom.modeValue.textContent = readModeLabel(state.mode);
   state.dom.levelValue.textContent = `${state.level} / ${LEVEL_DEFINITIONS.length}`;
-  state.dom.timeValue.textContent = `${Math.ceil(state.levelTimeRemaining)}s`;
-  state.dom.wakeValue.textContent = state.mode === "gameover" ? "0" : String(Math.round(Math.min(MAX_WAKEFULNESS, state.wakefulness)));
   state.dom.scoreValue.textContent = String(state.score);
   state.dom.hitsValue.textContent = String(state.bonks);
 }
@@ -2164,26 +2159,6 @@ function describeDadState(state) {
   return "awake-ish";
 }
 
-function readModeLabel(mode) {
-  if (mode === "menu") {
-    return "Menu";
-  }
-
-  if (mode === "announcement") {
-    return "Briefing";
-  }
-
-  if (mode === "gameover") {
-    return "Asleep";
-  }
-
-  if (mode === "victory") {
-    return "Saved";
-  }
-
-  return "Live";
-}
-
 function readLevelConfig(level) {
   const config = LEVEL_DEFINITIONS.find((entry) => entry.level === level);
 
@@ -2321,14 +2296,13 @@ function readLayout(state) {
 function readDomReferences(doc) {
   const gameRoot = doc.getElementById("game-root");
   const overlay = doc.getElementById("overlay");
+  const overlayCard = doc.getElementById("overlay-card");
   const overlayKicker = doc.getElementById("overlay-kicker");
   const overlayTitle = doc.getElementById("overlay-title");
+  const overlayMenu = doc.getElementById("overlay-menu");
   const overlayBody = doc.getElementById("overlay-body");
   const overlayAction = doc.getElementById("overlay-action");
-  const modeValue = doc.getElementById("mode-value");
   const levelValue = doc.getElementById("level-value");
-  const timeValue = doc.getElementById("time-value");
-  const wakeValue = doc.getElementById("wake-value");
   const scoreValue = doc.getElementById("score-value");
   const hitsValue = doc.getElementById("hits-value");
 
@@ -2340,12 +2314,20 @@ function readDomReferences(doc) {
     throw new Error("Expected #overlay to exist.");
   }
 
+  if (!(overlayCard instanceof HTMLElement)) {
+    throw new Error("Expected #overlay-card to exist.");
+  }
+
   if (!(overlayKicker instanceof HTMLElement)) {
     throw new Error("Expected #overlay-kicker to exist.");
   }
 
   if (!(overlayTitle instanceof HTMLElement)) {
     throw new Error("Expected #overlay-title to exist.");
+  }
+
+  if (!(overlayMenu instanceof HTMLElement)) {
+    throw new Error("Expected #overlay-menu to exist.");
   }
 
   if (!(overlayBody instanceof HTMLElement)) {
@@ -2356,20 +2338,8 @@ function readDomReferences(doc) {
     throw new Error("Expected #overlay-action to exist.");
   }
 
-  if (!(modeValue instanceof HTMLElement)) {
-    throw new Error("Expected #mode-value to exist.");
-  }
-
   if (!(levelValue instanceof HTMLElement)) {
     throw new Error("Expected #level-value to exist.");
-  }
-
-  if (!(timeValue instanceof HTMLElement)) {
-    throw new Error("Expected #time-value to exist.");
-  }
-
-  if (!(wakeValue instanceof HTMLElement)) {
-    throw new Error("Expected #wake-value to exist.");
   }
 
   if (!(scoreValue instanceof HTMLElement)) {
@@ -2383,14 +2353,13 @@ function readDomReferences(doc) {
   return {
     gameRoot,
     overlay,
+    overlayCard,
     overlayKicker,
     overlayTitle,
+    overlayMenu,
     overlayBody,
     overlayAction,
-    modeValue,
     levelValue,
-    timeValue,
-    wakeValue,
     scoreValue,
     hitsValue,
   };

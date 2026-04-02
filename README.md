@@ -15,9 +15,10 @@ also target much higher into the room instead of staying close to the tabletop, 
 below halfway up the screen. Levels 3 and 4 now use four frogs instead of two. Head hits now do
 `1.5x` their previous reward, body hits do `0.67x`, and headshots spawn a small floating
 `HEADSHOT!` popup that fades out over `0.75s`. Inter-level briefing cards no longer auto-close;
-they now wait for a click or `Enter` press. The page HUD is now split between an upper-left
-instruction panel and upper-right status tiles, and Dad's eye art now uses oval eyes while awake
-and flat closed lines only after he finally falls asleep. Dad also now has a rounded wakefulness
+they now wait for a click or `Enter` press. The start screen now uses one centered `Sleepy Seder`
+intro card with the controls inside it, while live play shows a bare dark-text top strip for
+`Level`, `Bonks`, and `Score`. Dad's eye art now uses oval eyes while awake and flat closed lines
+only after he finally falls asleep. Dad also now has a rounded wakefulness
 bar floating above his head that shifts smoothly from green at full wakefulness through yellow in
 the middle to red at `10%` or lower, so his current alertness is readable in the play space itself.
 Above that bar, a semi-transparent grey timer disc now empties counterclockwise from `12 o'clock`
@@ -27,10 +28,10 @@ browser window.
 
 ## Files
 
-- `index.html` provides the HUD, overlay card, and Phaser mount point.
+- `index.html` provides the top status strip, overlay card, and Phaser mount point.
 - `src/game.js` owns bootstrapping, the campaign level flow, spoon aiming, soup-dip reload logic,
   hazard simulation, dad wakefulness, generated seder-table art, and deterministic test hooks.
-- `src/styles/main.scss` is the source stylesheet for the HUD and overlay shell.
+- `src/styles/main.scss` is the source stylesheet for the status strip and overlay shell.
 - `src/styles/main.css` is the compiled stylesheet loaded by the page.
 - `docs/` contains the implementation and gameplay notes for the project.
 - `playwright_scripts/smoke_actions.json` is the reusable smoke input burst for browser validation.

@@ -37,15 +37,15 @@
   halfway point of the screen.
 - Headshots now spawn a floating `HEADSHOT!` label, and the automation text state exposes active
   floating text labels for verification.
-- The page HUD is now split into an upper-left instruction panel and an upper-right telemetry
-  panel, instead of packing both into one top-left card.
-- The entire presentation now lives inside a fixed landscape `5:3` stage, and the HUD plus overlay
-  sizing scales from that stage instead of the browser viewport.
+- The start screen now uses one centered `Sleepy Seder` intro card with the controls inside it,
+  while live play uses a text-only top strip for `Level`, `Bonks`, and `Score`.
+- The entire presentation now lives inside a fixed landscape `5:3` stage, and the status strip
+  plus overlay sizing scale from that stage instead of the browser viewport.
 - Dad now keeps oval eyes while awake or drooping, and only switches to flat closed-eye lines in
   the actual asleep game-over state.
 - Dad now also has an in-world rounded wakefulness bar above his head that shifts from green at
-  full wakefulness through yellow in the middle to red at `10%` or lower, so the same alertness
-  value shown in the HUD is visible directly over the target.
+  full wakefulness through yellow in the middle to red at `10%` or lower, so Dad's current
+  alertness stays visible directly over the target.
 - A semi-transparent grey timer disc now sits above that wakefulness bar and empties
   counterclockwise from `12 o'clock` as `levelTimeRemaining` runs down.
 - Browser automation relies on `window.advanceTime(ms)` and `window.render_game_to_text()`.

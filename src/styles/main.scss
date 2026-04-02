@@ -50,31 +50,16 @@ body {
   position: absolute;
 }
 
-.hud-layout {
-  top: 1.2em;
-  left: 1.2em;
-  right: 1.2em;
+.stats-strip {
+  top: 1em;
+  left: 1.15em;
+  right: 1.15em;
   z-index: 3;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 1em;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: start;
+  color: rgba(44, 26, 21, 0.9);
   pointer-events: none;
-}
-
-.hud-panel {
-  width: min(24em, calc((100% - 3.4em) / 2));
-  padding: 1.15em 1.2em 1.2em;
-  border: 1px solid $panel-border;
-  border-radius: 1.35em;
-  background: $panel-background;
-  backdrop-filter: blur(0.75rem);
-  box-shadow: 0 1.35em 3.4em rgba(69, 21, 33, 0.24);
-  pointer-events: auto;
-}
-
-.hud-panel--status {
-  width: min(20em, calc((100% - 3.4em) / 2));
 }
 
 .eyebrow {
@@ -86,7 +71,32 @@ body {
   text-transform: uppercase;
 }
 
-.hud-panel h1,
+.stat-readout {
+  margin: 0;
+  font-size: 0.94em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.stat-readout strong {
+  font-size: 1.32em;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.stat-readout--level {
+  justify-self: start;
+}
+
+.stat-readout--bonks {
+  justify-self: center;
+}
+
+.stat-readout--score {
+  justify-self: end;
+}
+
 .overlay-card h2 {
   margin: 0;
   font-size: 2.8em;
@@ -95,38 +105,8 @@ body {
 
 .summary {
   margin: 0.85em 0 0;
-  color: $text-secondary;
   line-height: 1.55;
   font-size: 1em;
-}
-
-.telemetry {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0.7em;
-  margin: 1em 0 0;
-}
-
-.telemetry div {
-  padding: 0.72em 0.78em 0.8em;
-  border: 1px solid rgba(255, 247, 234, 0.12);
-  border-radius: 1em;
-  background: rgba(255, 247, 234, 0.07);
-}
-
-.telemetry dt {
-  margin: 0;
-  color: rgba(248, 223, 180, 0.74);
-  font-size: 0.76em;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.telemetry dd {
-  margin: 0.28em 0 0;
-  color: $text-primary;
-  font-size: 1.45em;
-  font-weight: 700;
 }
 
 .controls {
@@ -179,6 +159,10 @@ body {
   text-align: center;
 }
 
+.overlay-card--menu {
+  width: min(37em, 100%);
+}
+
 .overlay-card h2 {
   color: $text-deep;
 }
@@ -187,6 +171,31 @@ body {
   margin: 0.8em 0 0;
   color: rgba(69, 21, 33, 0.82);
   line-height: 1.55;
+}
+
+.overlay-card .summary {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 29em;
+  color: rgba(69, 21, 33, 0.82);
+}
+
+.overlay-controls {
+  width: min(28em, 100%);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.overlay-card .controls li {
+  color: rgba(69, 21, 33, 0.82);
+}
+
+.overlay-card .controls span {
+  color: rgba(69, 21, 33, 0.72);
+}
+
+.overlay-card .controls strong {
+  color: $text-deep;
 }
 
 .overlay-action {
@@ -205,31 +214,22 @@ body {
 }
 
 @container stage (max-width: 640px) {
-  .hud-layout {
-    top: 0.75em;
-    left: 0.75em;
-    right: 0.75em;
-    flex-direction: column;
-    gap: 0.75em;
+  .stats-strip {
+    top: 0.8em;
+    left: 0.85em;
+    right: 0.85em;
   }
 
-  .hud-panel,
-  .hud-panel--status {
-    width: 100%;
-    padding: 1em;
-  }
-
-  .hud-panel h1,
   .overlay-card h2 {
     font-size: 2.2em;
   }
 
-  .telemetry {
-    gap: 0.55em;
+  .stat-readout {
+    font-size: 0.78em;
   }
 
-  .telemetry dd {
-    font-size: 1.22em;
+  .stat-readout strong {
+    font-size: 1.2em;
   }
 
   .controls li {

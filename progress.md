@@ -206,3 +206,18 @@ Validation:
   two hits inside the new fixed stage.
 - Retuned the fixed stage from landscape `4:3` to landscape `5:3` so the canvas is wider while the
   DOM HUD and overlay continue scaling from the same shared frame.
+- Reworked the DOM chrome again so the menu now uses one centered `Sleepy Seder` intro card with
+  the controls inside it, instead of keeping a separate top-left instruction box plus a second
+  pre-start overlay card.
+- Removed the old `Round Status` panel and replaced it with a bare dark-text top strip that spreads
+  `Level`, `Bonks`, and `Score` across the top of the stage with no panel background.
+- Updated `updateOverlay()` and the DOM bindings so menu mode shows the intro card while level
+  briefings, game over, and victory still reuse the same centered message box flow unchanged.
+- Recompiled `src/styles/main.scss` after the layout rewrite and rechecked `src/game.js` with
+  `node --check`.
+- Reran the deterministic baseline smoke into `tmp/smoke-run-18/`; level 1 still enters live play
+  and the canned input still lands two hits, ending at `score: 420` and `bonks: 2`.
+- Added a DOM-inclusive layout verification in `tmp/ui-layout-check-03/`, confirming the menu
+  shows the centered `Sleepy Seder` card, the old overlay body is hidden before play starts, and
+  the top strip reads `Level 1 / 4`, `Bonks 0`, and `Score 0` in both the opening screen and live
+  play.
