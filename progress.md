@@ -231,3 +231,6 @@ Validation:
   `1s`.
 - Added `Captain Matzo Ball Presents` as the small menu kicker above the `Sleepy Seder` title on
   the opening intro card.
+- Replaced the repo-root `README.md` with a player-friendly GitHub landing page and folded the
+  technical README role into `docs/README.md`.
+- Added `LICENSE.md` at the repo root using the official GNU AGPL-3.0 text.

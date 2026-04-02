@@ -1,11 +1,28 @@
 # Documentation
 
-## Available docs
+This folder now acts as the technical landing page for `sleepy_seder`. The root
+[`README.md`](../README.md) is the player-friendly GitHub page, while this docs index keeps the
+implementation and maintenance view.
+
+## Start Here
 
 - `developer_overview.md`: structure, runtime responsibilities, layout model, and maintenance notes.
 - `gameplay_systems.md`: mode flow, level structure, controls, scoring, wakefulness, hazards, and
   projectile behavior.
 - `TODO.md`: the project task list, now marked against the implemented four-level campaign work.
+
+## Root Files
+
+- `../README.md`: player-facing project overview for GitHub readers.
+- `../LICENSE.md`: GNU Affero General Public License v3.0 text from the official GNU source.
+- `../index.html`: DOM shell for the stage, status strip, and overlay card.
+- `../src/game.js`: Phaser bootstrapping, gameplay flow, rendering, input, audio, and automation
+  hooks.
+- `../src/styles/main.scss`: source styles for the stage shell and DOM UI.
+- `../src/styles/main.css`: compiled stylesheet loaded by the page.
+- `../vendor/phaser.js`: vendored Phaser `3.90.0` runtime.
+- `../playwright_scripts/smoke_actions.json`: reusable deterministic smoke inputs.
+- `../tmp/`: generated smoke and visual verification artifacts.
 
 ## Current implementation
 

@@ -2,6 +2,8 @@
 
 ## Structure
 
+- `README.md` in the repo root is now the player-facing GitHub landing page.
+- `LICENSE.md` in the repo root now contains the GNU AGPL-3.0 text.
 - `index.html` provides the centered fixed-`5:3` stage shell, the top status strip, the shared
   overlay card, the Phaser mount point, and script loading order.
 - `vendor/phaser.js` is the locally vendored Phaser runtime loaded before the game bootstraps.
