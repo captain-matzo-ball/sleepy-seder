@@ -37,7 +37,13 @@ const LEVEL_DEFINITIONS = [
     threatLabel: "Quiet table",
     locustCount: 0,
     frogCount: 0,
-    announcements: [],
+    announcements: [
+      {
+        kicker: "Level 1",
+        title: "Keep Dad Awake",
+        body: "The table is still quiet for now. Start the seder by bonking Dad awake before the first glass runs dry.",
+      },
+    ],
   },
   {
     level: 2,
@@ -448,7 +454,7 @@ function resetRound(state, mode) {
 
 function startRound(state) {
   resetRound(state, "playing");
-  startLevel(state, 1, false);
+  startLevel(state, 1, true);
   syncUi(state);
   drawScene(state);
 }
@@ -1485,6 +1491,30 @@ function drawDad(graphics, state) {
   const sleepiness = getSleepinessFactor(state);
   const eyeOpen = 1.1 - sleepiness * 0.78 + state.dad.recoil * 0.8;
   const isAsleep = state.mode === "gameover";
+  const wakeRatio = state.mode === "gameover" ? 0 : state.wakefulness / MAX_WAKEFULNESS;
+  const wakeBarColor = readWakeBarColor(wakeRatio);
+  const wakeBarWidth = dadPose.headRadius * 2.2;
+  const wakeBarHeight = dadPose.headRadius * 0.36;
+  const wakeBarX = dadPose.headX - wakeBarWidth * 0.5;
+  const wakeBarY = dadPose.headY - dadPose.headRadius * 1.82;
+  const wakeFillWidth = wakeBarWidth * wakeRatio;
+  const wakeBarRadius = wakeBarHeight * 0.5;
+
+  graphics.fillStyle(0x3d0d15, 0.72);
+  graphics.fillRoundedRect(
+    wakeBarX - 3,
+    wakeBarY - 3,
+    wakeBarWidth + 6,
+    wakeBarHeight + 6,
+    wakeBarRadius + 3
+  );
+  graphics.fillStyle(0x6b1622, 0.95);
+  graphics.fillRoundedRect(wakeBarX, wakeBarY, wakeBarWidth, wakeBarHeight, wakeBarRadius);
+
+  if (wakeFillWidth > 0) {
+    graphics.fillStyle(wakeBarColor, 1);
+    graphics.fillRoundedRect(wakeBarX, wakeBarY, wakeFillWidth, wakeBarHeight, wakeBarRadius);
+  }
 
   graphics.fillStyle(0x6b4b2b, 0.58);
   graphics.fillRoundedRect(
@@ -1559,6 +1589,32 @@ function drawDad(graphics, state) {
   graphics.fillStyle(0xe8bf91, 1);
   graphics.fillCircle(dadPose.bodyX - dadPose.bodyWidth * 0.48, dadPose.bodyY + dadPose.bodyHeight * 0.08, dadPose.bodyWidth * 0.09);
   graphics.fillCircle(dadPose.bodyX + dadPose.bodyWidth * 0.48, dadPose.bodyY + dadPose.bodyHeight * 0.06, dadPose.bodyWidth * 0.09);
+}
+
+function readWakeBarColor(wakeRatio) {
+  if (wakeRatio <= 0.1) {
+    return 0xc61e2d;
+  }
+
+  if (wakeRatio <= 0.5) {
+    return interpolateRgbColor(0xc61e2d, 0xd6c93a, (wakeRatio - 0.1) / 0.4);
+  }
+
+  return interpolateRgbColor(0xd6c93a, 0x2ea84e, (wakeRatio - 0.5) / 0.5);
+}
+
+function interpolateRgbColor(startColor, endColor, progress) {
+  const startR = (startColor >> 16) & 0xff;
+  const startG = (startColor >> 8) & 0xff;
+  const startB = startColor & 0xff;
+  const endR = (endColor >> 16) & 0xff;
+  const endG = (endColor >> 8) & 0xff;
+  const endB = endColor & 0xff;
+  const currentR = Math.round(startR + (endR - startR) * progress);
+  const currentG = Math.round(startG + (endG - startG) * progress);
+  const currentB = Math.round(startB + (endB - startB) * progress);
+
+  return (currentR << 16) | (currentG << 8) | currentB;
 }
 
 function drawSpoon(graphics, state) {

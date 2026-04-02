@@ -160,3 +160,27 @@ Validation:
   confirms the live-play oval-eye rendering, `tmp/ui-layout-check-01-asleep/` confirms the closed-eye
   game-over rendering, and `tmp/ui-layout-check-02-menu.png` captures the split upper-left/upper-right
   HUD layout in a full-page browser shot.
+- Added a level-1 announcement card so pressing start from the menu now opens a proper stage popup
+  before live play begins.
+- Routed the opening menu start through the normal announcement path so `sounds/Chad Gadya.mp3`
+  now starts when the level-1 popup appears instead of waiting for level-1 live play.
+- Updated `playwright_scripts/smoke_actions.json` to dismiss the new opening popup before running
+  the baseline gameplay choreography.
+- Added focused verification in `tmp/level1-popup-check-01/`, confirming the first `Enter` opens
+  the level-1 announcement at full wakefulness with `audio.playCount: 1` while the cue is already
+  playing.
+- Added a second focused verification in `tmp/level1-popup-check-02/`, confirming dismissing the
+  level-1 card moves into `playing` without replaying the cue.
+- Reran the baseline smoke loop into `tmp/smoke-run-15/`; the updated choreography still lands two
+  level-1 hits after dismissing the new opening popup.
+- Added an in-world wakefulness indicator by drawing a solid red rounded bar above Dad's head,
+  tied directly to the same wakefulness value used by the HUD and loss condition.
+- Rechecked `src/game.js` with `node --check` after the wake-bar draw change.
+- Added a focused visual verification in `tmp/wake-bar-check-02/`, confirming the over-head bar
+  renders during live play with a partial fill that matches the captured `wakefulness: 46.5`.
+- Retuned the wakefulness bar color so it now shifts smoothly from green at full wakefulness
+  through yellow in the middle to red at `10%` or lower.
+- Added three focused color verification captures: `tmp/wake-bar-color-check-01-green/` confirms
+  the full `50`-point bar is green, `tmp/wake-bar-color-check-01-yellow/` confirms the mid-run
+  `23.4` wakefulness state lands yellow, and `tmp/wake-bar-color-check-01-red/` confirms the
+  `2.7` wakefulness state is solid red.

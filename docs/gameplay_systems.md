@@ -19,7 +19,7 @@
 - One more wine glass is empty each level, so the table shows `1` empty glass in level 1 and all
   `4` empty by level 4, starting with the glass closest to Dad and working outward.
 - Wakefulness drains `5%` faster per level, so later rounds punish missed shots more aggressively.
-- Level 1 is the baseline table.
+- Level 1 now opens with a quiet-table briefing card as soon as the player starts the run.
 - Level 2 announces a locust plague before the timer starts.
 - Level 3 announces a frog plague before the timer starts, and it now uses four frogs.
 - Level 4 plays two cards in sequence: `Oh no! Death of the firstborn!` and then `Just kidding!
@@ -78,13 +78,16 @@
 
 - Dad’s head slump, eye openness, and snore particles are all derived from the current sleepiness
   state rather than from separate animation clips.
+- Dad also carries a rounded wakefulness bar above his head that shifts from green at full
+  wakefulness through yellow to red at `10%` or lower, so the target's current alertness is
+  legible in the canvas even while the HTML HUD is elsewhere.
 - Hits generate crumbs and starburst particles to keep the scene readable even without sound.
 - Head hits also spawn a small red `HEADSHOT!` label that floats upward and fades out over `0.75s`.
 - Announcement cards and the HUD explain which plague is active and how far through the seder run
   the player has progressed.
-- `sounds/Chad Gadya.mp3` rewinds and replays when a level briefing first appears, or immediately
-  on levels without a briefing, so the run gets an audible cue before each stage and again on
-  victory.
+- `sounds/Chad Gadya.mp3` rewinds and replays when each level briefing first appears, including the
+  level-1 popup that shows right after the player starts, so the run gets an audible cue before
+  each stage and again on victory.
 - Dad falling asleep stops the level music and plays `sounds/Snore.mp3` as the failure cue.
 
 ## Automation hooks

@@ -27,7 +27,9 @@
   reflects campaign progress, with the Dad-side goblets emptying first.
 - Dad sits on the right side of the table, with his head pose derived from the active sleepiness
   state so collision checks and drawing use the same geometry; his eye art stays oval while awake
-  and only switches to flat closed lines in the actual game-over asleep state.
+  and only switches to flat closed lines in the actual game-over asleep state. A rounded
+  wakefulness bar is drawn from the same state just above his head, shifting from green at full
+  wakefulness through yellow to red at `10%` or lower.
 - Locusts now travel through a taller vertical lane that reaches down to the table edge, while
   frogs occupy fixed table positions and project tongues from explicit mouth coordinates into a much
   taller upward target band that stays above mid-screen. Levels 3 and 4 now place four frogs across
@@ -39,12 +41,15 @@
 
 - `advanceFrame()` routes between `menu`, `announcement`, `playing`, `gameover`, and `victory`
   while keeping UI and overlay text synchronized each step.
-- `startLevel()` and `completeLevel()` own the four-stage campaign, resetting wakefulness to max
-  between levels while preserving score and bonk totals.
+- `startRound()`, `startLevel()`, and `completeLevel()` own the four-stage campaign, resetting
+  wakefulness to max between levels while preserving score and bonk totals; the opening menu start
+  now routes into the same level-1 announcement flow as later stages instead of jumping straight to
+  live play.
 - `startAnnouncementSequence()` now enters a fully paused briefing state, and `advanceAnnouncementCard()`
   moves through one card per click or `Enter` press instead of relying on a countdown timer.
 - `playLevelStartCue()` rewinds and replays the same `sounds/Chad Gadya.mp3` element when a level
-  briefing first appears, immediately on levels that skip briefings, and again on victory.
+  briefing first appears, including the new level-1 popup shown right after the player starts, and
+  again on victory.
 - `enterGameOver()` now stops the level-start music and triggers `sounds/Snore.mp3` once when Dad
   finally nods off.
 - `playImpactCue()` advances through the three `Splat` files and is called from the Dad, table,
@@ -80,5 +85,8 @@
   `tmp/frog-audio-check-01/`, `tmp/ribbit-pitch-check-01/`, `tmp/frog-height-check-01/`,
   `tmp/announcement-click-check-01/`, `tmp/headshot-frogs-check-01/`,
   `tmp/chad-gadya-timing-check-01/`, `tmp/ui-layout-check-01-awake/`,
-  `tmp/ui-layout-check-01-asleep/`, and `tmp/ui-layout-check-02-menu.png`. Keep newer runs in
-  `tmp/` rather than mixing them into source files.
+  `tmp/ui-layout-check-01-asleep/`, `tmp/ui-layout-check-02-menu.png`,
+  `tmp/level1-popup-check-01/`, `tmp/level1-popup-check-02/`, `tmp/smoke-run-15/`, and
+  `tmp/wake-bar-check-02/`, `tmp/wake-bar-color-check-01-green/`,
+  `tmp/wake-bar-color-check-01-yellow/`, and `tmp/wake-bar-color-check-01-red/`. Keep newer runs
+  in `tmp/` rather than mixing them into source files.
