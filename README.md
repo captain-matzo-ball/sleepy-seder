@@ -20,6 +20,8 @@ instruction panel and upper-right status tiles, and Dad's eye art now uses oval 
 and flat closed lines only after he finally falls asleep. Dad also now has a rounded wakefulness
 bar floating above his head that shifts smoothly from green at full wakefulness through yellow in
 the middle to red at `10%` or lower, so his current alertness is readable in the play space itself.
+Above that bar, a semi-transparent grey timer disc now empties counterclockwise from `12 o'clock`
+as the level timer runs down.
 
 ## Files
 

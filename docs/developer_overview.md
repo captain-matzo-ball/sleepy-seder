@@ -29,7 +29,8 @@
   state so collision checks and drawing use the same geometry; his eye art stays oval while awake
   and only switches to flat closed lines in the actual game-over asleep state. A rounded
   wakefulness bar is drawn from the same state just above his head, shifting from green at full
-  wakefulness through yellow to red at `10%` or lower.
+  wakefulness through yellow to red at `10%` or lower. A semi-transparent grey timer disc sits
+  above it and empties counterclockwise from `12 o'clock` based on `levelTimeRemaining`.
 - Locusts now travel through a taller vertical lane that reaches down to the table edge, while
   frogs occupy fixed table positions and project tongues from explicit mouth coordinates into a much
   taller upward target band that stays above mid-screen. Levels 3 and 4 now place four frogs across
@@ -88,5 +89,7 @@
   `tmp/ui-layout-check-01-asleep/`, `tmp/ui-layout-check-02-menu.png`,
   `tmp/level1-popup-check-01/`, `tmp/level1-popup-check-02/`, `tmp/smoke-run-15/`, and
   `tmp/wake-bar-check-02/`, `tmp/wake-bar-color-check-01-green/`,
-  `tmp/wake-bar-color-check-01-yellow/`, and `tmp/wake-bar-color-check-01-red/`. Keep newer runs
-  in `tmp/` rather than mixing them into source files.
+  `tmp/wake-bar-color-check-01-yellow/`, `tmp/wake-bar-color-check-01-red/`,
+  `tmp/timer-pie-check-01-full/`, `tmp/timer-pie-check-01-mid/`, and
+  `tmp/timer-pie-check-02-near-empty/`. Keep newer runs in `tmp/` rather than mixing them into
+  source files.

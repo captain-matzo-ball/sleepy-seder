@@ -54,7 +54,7 @@ const LEVEL_DEFINITIONS = [
       {
         kicker: "Level 2",
         title: "Oh no! A plague of locusts!",
-        body: "Five locusts are about to buzz around the seder. A splat takes them out, but it also kills the shot.",
+        body: "Five locusts are about to buzz around the seder. A splat takes them out, but it also wastes the matzo ball.",
       },
     ],
   },
@@ -67,7 +67,7 @@ const LEVEL_DEFINITIONS = [
       {
         kicker: "Level 3",
         title: "Oh no! A plague of frogs!",
-        body: "Four frogs are lining the table. Their tongues fire every few seconds, and even their bad aim can still ruin a shot.",
+        body: "Four frogs are lining the table. They will try to eat the matzo balls with their long tongues.",
       },
     ],
   },
@@ -1493,12 +1493,16 @@ function drawDad(graphics, state) {
   const isAsleep = state.mode === "gameover";
   const wakeRatio = state.mode === "gameover" ? 0 : state.wakefulness / MAX_WAKEFULNESS;
   const wakeBarColor = readWakeBarColor(wakeRatio);
+  const levelTimerRatio = readLevelTimerRatio(state);
   const wakeBarWidth = dadPose.headRadius * 2.2;
   const wakeBarHeight = dadPose.headRadius * 0.36;
   const wakeBarX = dadPose.headX - wakeBarWidth * 0.5;
   const wakeBarY = dadPose.headY - dadPose.headRadius * 1.82;
   const wakeFillWidth = wakeBarWidth * wakeRatio;
   const wakeBarRadius = wakeBarHeight * 0.5;
+  const timerRadius = dadPose.headRadius * 0.42;
+  const timerCenterX = dadPose.headX;
+  const timerCenterY = wakeBarY - timerRadius - dadPose.headRadius * 0.18;
 
   graphics.fillStyle(0x3d0d15, 0.72);
   graphics.fillRoundedRect(
@@ -1515,6 +1519,26 @@ function drawDad(graphics, state) {
     graphics.fillStyle(wakeBarColor, 1);
     graphics.fillRoundedRect(wakeBarX, wakeBarY, wakeFillWidth, wakeBarHeight, wakeBarRadius);
   }
+
+  graphics.fillStyle(0x6a6a6a, 0.18);
+  graphics.fillCircle(timerCenterX, timerCenterY, timerRadius + 3);
+  graphics.fillStyle(0x9f9f9f, 0.28);
+  graphics.fillCircle(timerCenterX, timerCenterY, timerRadius);
+
+  if (levelTimerRatio > 0) {
+    const startAngle = -Math.PI / 2;
+    const endAngle = startAngle - Math.PI * 2 * levelTimerRatio;
+
+    graphics.fillStyle(0xb6b6b6, 0.55);
+    graphics.beginPath();
+    graphics.moveTo(timerCenterX, timerCenterY);
+    graphics.arc(timerCenterX, timerCenterY, timerRadius, startAngle, endAngle, true);
+    graphics.closePath();
+    graphics.fillPath();
+  }
+
+  graphics.lineStyle(2, 0x4f4f4f, 0.45);
+  graphics.strokeCircle(timerCenterX, timerCenterY, timerRadius);
 
   graphics.fillStyle(0x6b4b2b, 0.58);
   graphics.fillRoundedRect(
@@ -1601,6 +1625,14 @@ function readWakeBarColor(wakeRatio) {
   }
 
   return interpolateRgbColor(0xd6c93a, 0x2ea84e, (wakeRatio - 0.5) / 0.5);
+}
+
+function readLevelTimerRatio(state) {
+  if (state.mode === "menu" || state.mode === "announcement") {
+    return 1;
+  }
+
+  return state.levelTimeRemaining / LEVEL_DURATION_SECONDS;
 }
 
 function interpolateRgbColor(startColor, endColor, progress) {

@@ -184,3 +184,11 @@ Validation:
   the full `50`-point bar is green, `tmp/wake-bar-color-check-01-yellow/` confirms the mid-run
   `23.4` wakefulness state lands yellow, and `tmp/wake-bar-color-check-01-red/` confirms the
   `2.7` wakefulness state is solid red.
+- Added a semi-transparent grey timer disc above the wakefulness bar that empties
+  counterclockwise from `12 o'clock` as `levelTimeRemaining` runs down, while announcement cards
+  keep it full.
+- Rechecked `src/game.js` with `node --check` after the timer-disc draw change.
+- Added focused timer-disc verification captures: `tmp/timer-pie-check-01-full/` confirms the
+  opening briefing shows a full disc at `20s`, `tmp/timer-pie-check-01-mid/` shows a partially
+  emptied disc during live play at `16.8s`, and `tmp/timer-pie-check-02-near-empty/` forces a
+  live `1s` remaining state to confirm the disc is nearly empty.

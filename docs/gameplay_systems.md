@@ -81,6 +81,8 @@
 - Dad also carries a rounded wakefulness bar above his head that shifts from green at full
   wakefulness through yellow to red at `10%` or lower, so the target's current alertness is
   legible in the canvas even while the HTML HUD is elsewhere.
+- Above that bar, a semi-transparent grey timer disc empties counterclockwise from `12 o'clock` as
+  the active level timer runs down, while briefings leave it full.
 - Hits generate crumbs and starburst particles to keep the scene readable even without sound.
 - Head hits also spawn a small red `HEADSHOT!` label that floats upward and fades out over `0.75s`.
 - Announcement cards and the HUD explain which plague is active and how far through the seder run
